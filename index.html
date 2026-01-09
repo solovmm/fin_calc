@@ -2,548 +2,311 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Инфляционный калькулятор</title>
   <style>
     :root{
-      --bg:#0b1220;
+      --bg1:#070814;
+      --bg2:#0b1a2a;
       --card:rgba(255,255,255,.06);
-      --stroke:rgba(255,255,255,.12);
+      --card2:rgba(255,255,255,.08);
+      --stroke:rgba(255,255,255,.10);
       --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.70);
+      --muted:rgba(255,255,255,.68);
       --muted2:rgba(255,255,255,.55);
       --accent:#7c3aed;
-      --good:#22c55e;
-      --bad:#ef4444;
-      --shadow:0 16px 50px rgba(0,0,0,.35);
-      --radius:18px;
-      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-      --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
+      --accent2:#22c55e;
+      --danger:#ef4444;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --r:18px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:var(--sans);
+      font-family:var(--font);
       color:var(--text);
-      background:
-        radial-gradient(1200px 800px at 15% 10%, rgba(124,58,237,.25), transparent 55%),
-        radial-gradient(1000px 600px at 85% 15%, rgba(34,197,94,.14), transparent 55%),
-        radial-gradient(900px 700px at 40% 95%, rgba(239,68,68,.10), transparent 55%),
-        linear-gradient(180deg, #070b16 0%, var(--bg) 100%);
+      background: radial-gradient(1000px 600px at 15% 0%, rgba(124,58,237,.28), transparent 60%),
+                  radial-gradient(900px 600px at 80% 30%, rgba(34,197,94,.16), transparent 55%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
       min-height:100vh;
-      padding:22px 18px 40px;
+      padding:28px 18px;
     }
-    .wrap{max-width:1020px;margin:0 auto}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+    .wrap{max-width:1080px;margin:0 auto}
+    .top{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px
+    }
     .brand{display:flex;align-items:center;gap:10px}
     .logo{
-      width:40px;height:40px;border-radius:14px;
-      background:linear-gradient(135deg, rgba(124,58,237,.9), rgba(34,197,94,.6));
-      box-shadow:0 10px 30px rgba(124,58,237,.25);
-      display:grid;place-items:center;
-      border:1px solid rgba(255,255,255,.14);
+      width:40px;height:40px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(124,58,237,.9), rgba(34,197,94,.55));
+      box-shadow: 0 10px 26px rgba(124,58,237,.25);
+      display:grid;place-items:center;font-weight:800;
     }
-    .brand h1{font-size:16px;margin:0;letter-spacing:.2px;line-height:1.2}
-    .brand .sub{font-size:12.5px;color:var(--muted2);margin-top:2px}
-    .actions{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+    .title{line-height:1.1}
+    .title h1{font-size:18px;margin:0}
+    .title p{font-size:13px;margin:4px 0 0;color:var(--muted)}
+    .actions{display:flex;gap:10px;align-items:center}
     .btn{
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.04);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:14px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      transition:transform .08s ease, background .15s ease, border-color .15s ease;
-      user-select:none;
-      font-size:13px;
+      appearance:none;border:1px solid var(--stroke);background:rgba(255,255,255,.04);
+      color:var(--text);padding:10px 12px;border-radius:12px;cursor:pointer;
+      display:inline-flex;gap:8px;align-items:center;font-weight:650;
     }
-    .btn:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.20)}
-    .btn:active{transform:scale(.99)}
-    .btn.primary{
-      background:linear-gradient(135deg, rgba(124,58,237,.95), rgba(124,58,237,.65));
-      border-color:rgba(124,58,237,.25);
-      box-shadow:0 12px 34px rgba(124,58,237,.24);
-    }
-    .btn.primary:hover{background:linear-gradient(135deg, rgba(124,58,237,1), rgba(124,58,237,.75))}
-    .btn.small{padding:10px 12px}
-    .icon{width:18px;height:18px;opacity:.9;flex:0 0 auto}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
-    @media (max-width:920px){.grid{grid-template-columns:1fr}}
+    .btn:hover{background:rgba(255,255,255,.06)}
+    .grid{display:grid;grid-template-columns: 1.05fr .95fr;gap:16px}
+    @media (max-width: 900px){.grid{grid-template-columns:1fr}}
     .card{
-      background:var(--card);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
       border:1px solid var(--stroke);
-      border-radius:var(--radius);
+      border-radius:var(--r);
       box-shadow:var(--shadow);
+      padding:16px;
       overflow:hidden;
     }
-    .card .hd{padding:16px 16px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-    .title{font-size:15px;margin:0;letter-spacing:.2px}
-    .hint{margin:4px 0 0;color:var(--muted2);font-size:12.5px;line-height:1.35}
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      font-size:12px;color:var(--muted);
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.04);
-      padding:7px 10px;border-radius:999px;white-space:nowrap;
-    }
-    .pill strong{color:rgba(255,255,255,.90);font-weight:600}
-    .bd{padding:0 16px 16px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .card h2{margin:0 0 12px;font-size:16px}
+    .row{display:grid;grid-template-columns: 1fr 1fr;gap:12px}
     @media (max-width:560px){.row{grid-template-columns:1fr}}
-    .rowYears{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;margin-top:10px;align-items:end}
-    @media (max-width:560px){.rowYears{grid-template-columns:1fr}}
-    .swapBig{width:44px;height:44px;border-radius:14px;justify-content:center}
-    @media (max-width:560px){.swapBig{width:100%}}
-    .labelRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 8px}
-    label{display:block;font-size:12.5px;color:var(--muted);margin:0}
-    .helpBtn{
-      width:26px;height:26px;border-radius:10px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.04);
-      color:rgba(255,255,255,.86);
-      cursor:pointer;
-      display:grid;place-items:center;
-      font-weight:700;font-size:13px;
-      transition:background .15s ease,border-color .15s ease,transform .08s ease;
-      user-select:none;
+    .field{position:relative}
+    label{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12.5px;margin:0 0 8px}
+    .help{
+      width:18px;height:18px;border-radius:999px;border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);color:var(--muted);
+      display:inline-grid;place-items:center;font-size:12px;cursor:pointer;user-select:none;
     }
-    .helpBtn:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.22)}
-    .helpBtn:active{transform:scale(.99)}
-    .tooltip{
-      display:none;
-      margin-top:8px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.04);
-      color:rgba(255,255,255,.80);
-      font-size:12.5px;
-      line-height:1.4;
-    }
-    .tooltip b{color:rgba(255,255,255,.92)}
-    .field{
-      position:relative;
-      background:rgba(255,255,255,.04);
-      border:1px solid var(--stroke);
-      border-radius:14px;
-      padding:10px 12px;
-      display:flex;gap:10px;align-items:center;
-      min-height:44px;
-    }
-    .field:focus-within{
-      border-color:rgba(124,58,237,.42);
-      box-shadow:0 0 0 4px rgba(124,58,237,.14);
-    }
-    input[type="text"], select{
+    .help:hover{background:rgba(255,255,255,.06)}
+    input, select{
       width:100%;
-      background:transparent;
-      border:none;
-      outline:none;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(0,0,0,.18);
       color:var(--text);
+      outline:none;
+      font-size:15px;
+    }
+    select{cursor:pointer}
+    .money{
+      display:flex;align-items:center;gap:10px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      background:rgba(0,0,0,.18);
+    }
+    .money span{
+      color:var(--muted);
+      font-weight:700;
+      width:14px;
+    }
+    .money input{
+      border:none;background:transparent;padding:0;
       font-size:16px;
-      font-family:var(--sans);
     }
-    select{appearance:none}
-    .prefix{
-      width:28px;height:28px;border-radius:10px;
-      display:grid;place-items:center;
-      background:rgba(124,58,237,.14);
-      border:1px solid rgba(124,58,237,.22);
-      color:rgba(255,255,255,.92);
-      font-weight:800;
-      font-family:var(--mono);
-      flex:0 0 auto;
-    }
-    .suffix{
-      color:var(--muted2);
-      font-size:12px;
-      padding-left:6px;
-      border-left:1px solid rgba(255,255,255,.10);
-      white-space:nowrap;
-    }
-    .summary{
-      margin-top:12px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.04);
-      display:flex;gap:10px;align-items:center;justify-content:space-between;
-      cursor:pointer;
-      user-select:none;
-    }
-    .summary:hover{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.05)}
-    .summary .left{display:flex;gap:10px;align-items:center}
-    .summary .badge{
-      width:28px;height:28px;border-radius:10px;
-      display:grid;place-items:center;
-      background:rgba(124,58,237,.18);
-      border:1px solid rgba(124,58,237,.25);
-      flex:0 0 auto;
-    }
-    .summary .txt{font-size:12.5px;color:rgba(255,255,255,.82);line-height:1.35}
-    .summary .txt b{color:rgba(255,255,255,.92)}
-    .calcbar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center}
-    .calcbar .btn{flex:1 1 180px;justify-content:center}
-    .calcbar .btn.small{flex:0 0 auto}
-    .kbd{
-      font-family:var(--mono);
-      font-size:12px;
-      padding:2px 6px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(255,255,255,.05);
-      color:rgba(255,255,255,.88);
-      white-space:nowrap;
-    }
-    .toast{
-      display:none;
-      margin-top:12px;
-      padding:10px 12px;
-      border-radius:14px;
-      background:rgba(239,68,68,.10);
-      border:1px solid rgba(239,68,68,.30);
-      color:rgba(255,255,255,.90);
-      font-size:13px;
-      line-height:1.35;
-    }
-    .toast.ok{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.30)}
-    .spinner{
-      width:16px;height:16px;border-radius:50%;
-      border:2px solid rgba(255,255,255,.25);
-      border-top-color:rgba(255,255,255,.85);
-      animation:spin .8s linear infinite;
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .result{padding:16px}
-    .kpi{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:flex-start}
-    @media (max-width:700px){.kpi{grid-template-columns:1fr}}
-    .big{font-size:34px;letter-spacing:.2px;margin:0}
-    .big .mono{font-family:var(--mono)}
-    .note{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.4}
-    .statgrid{display:grid;grid-template-columns:1fr;gap:10px}
-    .stat{
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      padding:10px 12px;
-    }
-    .stat .lbl{font-size:12px;color:var(--muted2)}
-    .stat .val{font-size:16px;margin-top:3px}
-    .val.good{color:rgba(34,197,94,.95)}
-    .val.bad{color:rgba(239,68,68,.95)}
-    .spark{
-      margin-top:12px;
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      padding:10px 12px 12px;
-    }
-    .spark .lbl{
-      font-size:12px;color:var(--muted2);margin-bottom:8px;
+    .swapline{
       display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin:10px 0 0;
+      padding:10px 12px;border-radius:14px;border:1px solid var(--stroke);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:12.5px;
     }
-    .spark svg{width:100%;height:92px;display:block}
-    .spark .axis{
-      display:flex;justify-content:space-between;
-      color:var(--muted2);font-size:11px;margin-top:6px;
-    }
-    .divider{height:1px;background:rgba(255,255,255,.10);margin:14px 0}
-    .search{
-      margin-top:10px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .search input{
-      background:rgba(255,255,255,.04);
+    .swapbtn{
+      border:none;background:rgba(255,255,255,.05);color:var(--text);
+      padding:8px 10px;border-radius:12px;cursor:pointer;font-weight:750;
       border:1px solid var(--stroke);
-      border-radius:14px;
-      padding:10px 12px;
-      color:var(--text);
-      outline:none;
-      width:100%;
-      font-size:14px;
     }
-    .warn{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(239,68,68,.30);
-      background:rgba(239,68,68,.10);
-      color:rgba(255,255,255,.88);
-      font-size:13px;
-      display:none;
-      line-height:1.35;
+    .swapbtn:hover{background:rgba(255,255,255,.08)}
+    .cta{
+      margin-top:14px;
+      display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap;
+    }
+    .primary{
+      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(124,58,237,.65));
+      border:1px solid rgba(124,58,237,.55);
+      padding:12px 16px;border-radius:14px;font-weight:800;
+    }
+    .primary:hover{filter:brightness(1.04)}
+    .status{
+      margin-top:10px;font-size:12.5px;color:var(--muted);
+      min-height:18px;
     }
 
-    /* Modal */
-    .modalBack{
-      position:fixed;inset:0;background:rgba(0,0,0,.55);
-      display:none;align-items:center;justify-content:center;
-      padding:18px;z-index:50;
+    /* Result side */
+    .big{
+      font-size:36px;
+      font-weight:900;
+      letter-spacing:.2px;
+      margin:4px 0 2px;
     }
+    .sub{color:var(--muted);font-size:13px;margin:0 0 12px;line-height:1.35}
+    .kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
+    @media (max-width:560px){.kpis{grid-template-columns:1fr}}
+    .kpi{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:10px 12px;
+    }
+    .kpi .t{color:var(--muted);font-size:12px;margin-bottom:4px}
+    .kpi .v{font-weight:850;font-size:16px}
+    .kpi .v.pos{color:rgba(34,197,94,.95)}
+    .kpi .v.neg{color:rgba(239,68,68,.95)}
+    .chartwrap{
+      margin-top:12px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:10px 10px 8px;
+    }
+    .charthead{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:6px}
+    canvas{width:100%;height:160px;display:block}
+    /* Popover help */
+    .popover{
+      display:none;
+      position:absolute;z-index:10;left:0;top:30px;
+      width:min(320px, calc(100vw - 48px));
+      background:rgba(15,18,30,.96);
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:10px 12px;
+      box-shadow: 0 18px 38px rgba(0,0,0,.45);
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.35;
+    }
+    .popover b{color:var(--text)}
     .modal{
-      width:100%;max-width:720px;
-      background:rgba(12,18,34,.92);
-      border:1px solid rgba(255,255,255,.12);
+      position:fixed;inset:0;background:rgba(0,0,0,.5);
+      display:none;align-items:center;justify-content:center;padding:18px;z-index:50;
+    }
+    .modal .box{
+      max-width:560px;width:100%;
+      background:rgba(15,18,30,.98);
+      border:1px solid var(--stroke);
       border-radius:18px;
-      box-shadow:0 25px 90px rgba(0,0,0,.55);
-      overflow:hidden;
-      backdrop-filter:blur(10px);
+      padding:16px;
+      box-shadow: 0 26px 60px rgba(0,0,0,.55);
     }
-    .modal .mh{
-      padding:14px 16px;
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-    }
-    .modal .mh h3{margin:0;font-size:14px;letter-spacing:.2px}
-    .modal .mc{
-      padding:14px 16px 16px;
-      color:rgba(255,255,255,.86);
-      font-size:13px;
-      line-height:1.5;
-    }
-    .modal .mc ul{margin:10px 0 0;padding-left:18px}
-    .modal .mc li{margin:6px 0;color:rgba(255,255,255,.82)}
-    .modal .mc .src{color:rgba(255,255,255,.70);margin-top:10px}
+    .modal h3{margin:0 0 8px}
+    .modal p{margin:0 0 10px;color:var(--muted);line-height:1.5}
+    .modal .close{margin-top:8px}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
   </style>
 </head>
-
 <body>
   <div class="wrap">
-    <div class="topbar">
+    <div class="top">
       <div class="brand">
-        <div class="logo" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M4 13.5V19a1 1 0 0 0 1 1h2.2a1 1 0 0 0 .95-.68l.75-2.26a2 2 0 0 1 1.9-1.36h2.4a2 2 0 0 1 1.9 1.36l.75 2.26a1 1 0 0 0 .95.68H19a1 1 0 0 0 1-1v-5.5" stroke="rgba(255,255,255,.92)" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M7 11.5c2.2-2.7 7.8-2.7 10 0" stroke="rgba(255,255,255,.92)" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M9.3 9c1.1-1.3 4.3-1.3 5.4 0" stroke="rgba(255,255,255,.92)" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
+        <div class="logo">₽</div>
+        <div class="title">
           <h1>Инфляционный калькулятор</h1>
-          <div class="sub">1991–2024 (общий ИПЦ) и 1993–2024 (детальные категории)</div>
+          <p>Пересчёт цены между годами по выбранной категории</p>
         </div>
       </div>
-
       <div class="actions">
-        <button class="btn" id="btnHelp" title="Короткая справка">
-          <svg class="icon" viewBox="0 0 24 24" fill="none">
-            <path d="M12 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M9.09 9a3 3 0 1 1 5.82 1c0 2-3 2-3 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10Z" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          Справка
-        </button>
-        <button class="btn" id="btnCopy" title="Скопировать результат">
-          <svg class="icon" viewBox="0 0 24 24" fill="none">
-            <path d="M9 9h10v10H9z" stroke="currentColor" stroke-width="2" />
-            <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="2" />
-          </svg>
-          Копировать
-        </button>
+        <button class="btn" id="helpOpen">Справка</button>
+        <button class="btn" id="copyBtn">Копировать результат</button>
       </div>
     </div>
 
     <div class="grid">
-      <!-- LEFT -->
       <div class="card">
-        <div class="hd">
-          <div>
-            <h2 class="title">Введите цену и годы</h2>
-            <p class="hint">Цена в одном году, пересчёт в цены другого года (по выбранной группе ИПЦ).</p>
+        <h2>Введите цену и годы</h2>
+
+        <div class="row">
+          <div class="field">
+            <label>Сколько стоило
+              <span class="help" data-help="h_amount">?</span>
+              <span class="popover" id="h_amount"><b>Сумма</b> в рублях в выбранном исходном году. Пример: цена телефона в 2010.</span>
+            </label>
+            <div class="money">
+              <span>₽</span>
+              <input id="amount" inputmode="numeric" placeholder="100 000" />
+            </div>
           </div>
-          <div class="pill" id="dataBadge">
-            <strong>Данные:</strong> <span id="dataBadgeText">загрузка…</span>
+
+          <div class="field">
+            <label>Категория цен
+              <span class="help" data-help="h_cat">?</span>
+              <span class="popover" id="h_cat">Выберите общий индекс или конкретную группу товаров/услуг.</span>
+            </label>
+            <select id="series"></select>
           </div>
         </div>
 
-        <div class="bd">
-          <div class="warn" id="warnFile">
-            Вы открыли файл напрямую (file://). В этом режиме браузер может блокировать загрузку JSON с данными.<br/>
-            Откройте папку через локальный сервер: <span class="kbd">python3 -m http.server 8000</span>, затем перейдите на <span class="kbd">http://localhost:8000/</span>.
+        <div class="row" style="margin-top:10px">
+          <div class="field">
+            <label>Цена была в году
+              <span class="help" data-help="h_from">?</span>
+              <span class="popover" id="h_from">Год, в ценах которого указана исходная сумма.</span>
+            </label>
+            <select id="fromYear"></select>
           </div>
 
-          <!-- Amount -->
-          <div style="margin-top:10px;">
-            <div class="labelRow">
-              <label for="amount">Сколько стоило</label>
-              <button class="helpBtn" type="button" data-tip="tipAmount">?</button>
-            </div>
-            <div class="field">
-              <div class="prefix">₽</div>
-              <input id="amount" inputmode="numeric" autocomplete="off" placeholder="100 000" />
-              <div class="suffix">руб.</div>
-            </div>
-            <div class="tooltip" id="tipAmount">
-              Исходная цена. Пример: «телефон стоил 100 000 ₽».
-            </div>
+          <div class="field">
+            <label>Перевести в цены года
+              <span class="help" data-help="h_to">?</span>
+              <span class="popover" id="h_to">Год, для которого вы хотите получить эквивалентную цену.</span>
+            </label>
+            <select id="toYear"></select>
           </div>
-
-          <!-- Category search + select -->
-          <div class="search">
-            <input id="catSearch" placeholder="Поиск по категории (например: мясо, транспорт, услуги)"/>
-          </div>
-
-          <div class="row" style="margin-top:10px;">
-            <div style="grid-column:1 / -1;">
-              <div class="labelRow">
-                <label for="category">Категория (ряд ИПЦ)</label>
-                <button class="helpBtn" type="button" data-tip="tipCat">?</button>
-              </div>
-              <div class="field">
-                <select id="category"></select>
-              </div>
-              <div class="tooltip" id="tipCat">
-                «Все товары и услуги» соответствует общему ИПЦ. Детальные категории доступны с 1993 года.
-              </div>
-            </div>
-          </div>
-
-          <!-- Years -->
-          <div class="rowYears">
-            <div>
-              <div class="labelRow">
-                <label for="fromYear">Год, в котором эта цена была</label>
-                <button class="helpBtn" type="button" data-tip="tipFrom">?</button>
-              </div>
-              <div class="field">
-                <select id="fromYear"></select>
-              </div>
-              <div class="tooltip" id="tipFrom">
-                Год, в ценах которого указана исходная сумма.
-              </div>
-            </div>
-
-            <button class="btn swapBig" id="btnSwap" type="button" title="Поменять годы местами">↔</button>
-
-            <div>
-              <div class="labelRow">
-                <label for="toYear">Перевести в цены года</label>
-                <button class="helpBtn" type="button" data-tip="tipTo">?</button>
-              </div>
-              <div class="field">
-                <select id="toYear"></select>
-              </div>
-              <div class="tooltip" id="tipTo">
-                Год, в цены которого вы хотите пересчитать.
-              </div>
-            </div>
-          </div>
-
-          <!-- Summary -->
-          <div class="summary" id="summarySwap" title="Нажмите, чтобы поменять годы местами (↔)">
-            <div class="left">
-              <div class="badge" aria-hidden="true">⏳</div>
-              <div class="txt">
-                Сейчас вы считаете: <b id="flowText">—</b>.
-                <span style="color:rgba(255,255,255,.65)">Нажмите здесь, чтобы посчитать наоборот.</span>
-              </div>
-            </div>
-            <div class="kbd">↔</div>
-          </div>
-
-          <div class="calcbar">
-            <button class="btn small" id="btnSetMax" type="button" title="Поставить последний доступный год как целевой">Сейчас</button>
-
-            <button class="btn primary" id="btnCalc" type="button">
-              <span id="calcIcon" style="display:inline-flex;align-items:center;gap:8px;">
-                <svg class="icon" viewBox="0 0 24 24" fill="none">
-                  <path d="M7 12h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
-                </svg>
-                Рассчитать
-              </span>
-              <span id="calcLoading" style="display:none;align-items:center;gap:8px;">
-                <span class="spinner" aria-hidden="true"></span>
-                Считаю…
-              </span>
-            </button>
-          </div>
-
-          <div id="rangeNote" class="hint" style="margin-top:10px;"></div>
-          <div id="toast" class="toast"></div>
         </div>
+
+        <div class="swapline">
+          <div id="directionText">—</div>
+          <button class="swapbtn" id="swapBtn" title="Поменять годы местами">↔ Поменять</button>
+        </div>
+
+        <div class="cta">
+          <button class="btn" id="resetBtn">Сброс</button>
+          <button class="btn primary" id="calcBtn">Рассчитать</button>
+        </div>
+
+        <div class="status" id="status">Загрузка данных…</div>
       </div>
 
-      <!-- RIGHT -->
       <div class="card">
-        <div class="hd">
-          <div>
-            <h2 class="title">Результат</h2>
-            <p class="hint" id="resultHint">Загрузите данные, выберите категорию, затем нажмите «Рассчитать».</p>
-          </div>
-          <div class="pill"><strong>Формат:</strong> <span class="kbd">₽</span> и <span class="kbd">%</span></div>
-        </div>
+        <h2>Результат</h2>
+        <p class="sub" id="summary">—</p>
 
-        <div class="result">
+        <div class="big" id="resultValue">—</div>
+
+        <div class="kpis">
           <div class="kpi">
-            <div>
-              <p class="big" id="resMain"><span class="mono">—</span></p>
-              <p class="note" id="resLine">—</p>
-            </div>
-
-            <div class="statgrid">
-              <div class="stat">
-                <div class="lbl">Разница</div>
-                <div class="val" id="resDiff">—</div>
-              </div>
-              <div class="stat">
-                <div class="lbl">В процентах</div>
-                <div class="val" id="resPct">—</div>
-              </div>
-              <div class="stat">
-                <div class="lbl">Во сколько раз</div>
-                <div class="val" id="resFactor">—</div>
-              </div>
-            </div>
+            <div class="t">Разница</div>
+            <div class="v" id="diffValue">—</div>
           </div>
-
-          <div class="spark" id="sparkBox" style="display:none;">
-            <div class="lbl">
-              <span>Эквивалент по годам</span>
-              <span class="kbd" id="sparkSpan">—</span>
-            </div>
-            <svg id="sparkSvg" viewBox="0 0 300 92" preserveAspectRatio="none" aria-label="График"></svg>
-            <div class="axis">
-              <span id="sparkMin">—</span>
-              <span id="sparkMax">—</span>
-            </div>
+          <div class="kpi">
+            <div class="t">В процентах</div>
+            <div class="v" id="pctValue">—</div>
           </div>
-
-          <div class="divider"></div>
-
-          <div class="hint" id="resultMeta">
-            Подсказка: чтобы ответить на «сколько стоило тогда», нажмите <span class="kbd">↔</span> (годы поменяются местами).
+          <div class="kpi">
+            <div class="t">Во сколько раз</div>
+            <div class="v" id="factorValue">—</div>
           </div>
+        </div>
+
+        <div class="chartwrap">
+          <div class="charthead">
+            <span>Эквивалент по годам</span>
+            <span class="mono" id="rangeTag">—</span>
+          </div>
+          <canvas id="chart" width="900" height="260"></canvas>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Help modal -->
-  <div class="modalBack" id="modalBack" role="dialog" aria-modal="true">
-    <div class="modal">
-      <div class="mh">
-        <h3>Справка</h3>
-        <button class="btn" id="btnCloseHelp" type="button">Закрыть</button>
-      </div>
-      <div class="mc">
-        <div><b>Что делает калькулятор</b></div>
-        <ul>
-          <li>Берет выбранный ряд ИПЦ (общий или по категории).</li>
-          <li>Считает относительный уровень цен по годам и переводит сумму из года A в цены года B.</li>
-          <li>Если категория имеет данные не за все годы, список годов автоматически ограничивается.</li>
-        </ul>
-        <div class="src" id="srcMeta">Источник: загрузка…</div>
-      </div>
+  <div class="modal" id="helpModal">
+    <div class="box">
+      <h3>Как пользоваться</h3>
+      <p>1) Введите сумму и год, <b>когда эта цена была актуальна</b>.</p>
+      <p>2) Выберите год, <b>в цены которого</b> нужно пересчитать.</p>
+      <p>3) Если хотите посчитать наоборот, нажмите <b>↔ Поменять</b>.</p>
+      <p>Данные: официальные индексы потребительских цен (Росстат), пересчитаны в годовые темпы (в процентах).</p>
+      <button class="btn close" id="helpClose">Закрыть</button>
     </div>
   </div>
 
-  <script src="./app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
