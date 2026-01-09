@@ -11,6 +11,20 @@ const state = {
   selectedSeriesId: null,
 };
 
+let isDirty = true;
+
+function markDirty(msg = 'Изменено. Нажмите «Рассчитать».') {
+  isDirty = true;
+  el('summary').textContent = '—';
+  el('resultValue').textContent = '—';
+  el('diffValue').textContent = '—';
+  el('pctValue').textContent = '—';
+  el('factorValue').textContent = '—';
+  el('rangeTag').textContent = '—';
+  drawChart([]);
+  el('status').textContent = msg;
+}
+
 function fmtMoney(n) {
   if (!isFinite(n)) return '—';
   return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(Math.round(n)) + ' ₽';
@@ -89,8 +103,22 @@ function buildYearSelects() {
     toSel.appendChild(o2);
   });
 
-  fromSel.value = years[0];
-  toSel.value = years[years.length - 1];
+  const pickNearest = (target) => {
+    if (years.includes(target)) return target;
+    let best = years[0];
+    let bestD = Math.abs(best - target);
+    for (const y of years) {
+      const d = Math.abs(y - target);
+      if (d < bestD) { best = y; bestD = d; }
+    }
+    return best;
+  };
+
+  const defaultFrom = pickNearest(2020);
+  const defaultTo = pickNearest(2024);
+
+  fromSel.value = String(defaultFrom);
+  toSel.value = String(defaultTo);
 
   updateDirectionText();
 }
@@ -109,7 +137,7 @@ function swapYears(){
   fromSel.value = toSel.value;
   toSel.value = a;
   updateDirectionText();
-  calculateAndRender();
+  markDirty();
 }
 
 // Mode A: multiply rates from minYear..maxYear-1 (matches прошлые версии)
@@ -153,6 +181,17 @@ function buildPath(amount, fromYear, toYear, ratesByYear) {
 function drawChart(points) {
   const canvas = el('chart');
   const ctx = canvas.getContext('2d');
+
+  // Пустой график (когда пользователь изменил параметры и еще не нажал «Рассчитать»)
+  if (!points || points.length < 2) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(255,255,255,.45)';
+    ctx.font = '12px system-ui, -apple-system, Segoe UI, Roboto, Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Нажмите «Рассчитать», чтобы построить график', canvas.width / 2, canvas.height / 2);
+    ctx.textAlign = 'left';
+    return;
+  }
 
   // clear
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -229,16 +268,16 @@ function drawChart(points) {
 }
 
 function calculateAndRender() {
-  const amountRaw = (el('amount').value || '').replace(/\s+/g,'').replace(/₽/g,'').trim();
-  const amount = parseFloat(amountRaw);
+    const amountRaw = (el('amount').value || '').replace(/\s+/g,'').replace(/\D/g,'');
+  const amount = amountRaw ? parseFloat(amountRaw) : 0;
   const fromYear = clampInt(el('fromYear').value);
   const toYear = clampInt(el('toYear').value);
   const series = state.seriesById.get(state.selectedSeriesId);
 
   if (!series) return;
 
-  if (!Number.isFinite(amount) || amount <= 0) {
-    el('status').textContent = 'Введите сумму больше нуля.';
+    if (!Number.isFinite(amount) || amount < 0) {
+    el('status').textContent = 'Введите корректную сумму (0 или больше).';
     return;
   }
 
@@ -284,7 +323,11 @@ function calculateAndRender() {
 
   // cache last for copy
   state.lastResultText = `${fmtMoney(amount)} в ${fromYear} = ${fmtMoney(result)} в ценах ${toYear} (${catName})`;
+
+  isDirty = false;
+  el('status').textContent = 'Готово.';
 }
+
 
 function bindUI(){
   // help popovers
@@ -302,22 +345,18 @@ function bindUI(){
     document.querySelectorAll('.popover').forEach(p => p.style.display = 'none');
   });
 
-  el('series').addEventListener('change', () => {
-    state.selectedSeriesId = el('series').value;
-    buildYearSelects();
-    calculateAndRender();
-  });
+  el('series').addEventListener('change', () => { state.selectedSeriesId = el('series').value; buildYearSelects(); updateDirectionText(); markDirty(); });
 
-  el('fromYear').addEventListener('change', () => { updateDirectionText(); calculateAndRender(); });
-  el('toYear').addEventListener('change', () => { updateDirectionText(); calculateAndRender(); });
+  el('fromYear').addEventListener('change', () => { updateDirectionText(); markDirty(); });
+  el('toYear').addEventListener('change', () => { updateDirectionText(); markDirty(); });
 
   el('swapBtn').addEventListener('click', swapYears);
-  el('calcBtn').addEventListener('click', calculateAndRender);
+  el('calcBtn').addEventListener('click', () => { calculateAndRender(); });
 
   el('resetBtn').addEventListener('click', () => {
     el('amount').value = '';
     buildYearSelects();
-    el('status').textContent = 'Введите сумму и нажмите «Рассчитать».';
+    markDirty('Введите сумму, выберите годы и нажмите «Рассчитать».');
     el('resultValue').textContent = '—';
     el('summary').textContent = '—';
     el('diffValue').textContent = '—';
@@ -347,14 +386,51 @@ function bindUI(){
 
   // nice spacing in amount input on blur
   el('amount').addEventListener('blur', () => {
-    const raw = (el('amount').value||'').replace(/\s+/g,'');
-    const num = parseFloat(raw);
-    if (Number.isFinite(num)) el('amount').value = new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0}).format(num);
+    const input = el('amount');
+    let raw = (input.value || '').replace(/\s+/g,'').replace(/\D/g,'');
+    raw = raw.replace(/^0+(?=\d)/,'');
+    if (!raw) {
+      input.value = '0';
+      markDirty();
+      return;
+    }
+    input.value = raw.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    markDirty();
   });
+
   el('amount').addEventListener('input', () => {
-    // don't spam errors while typing
-    el('status').textContent = ' ';
+    const input = el('amount');
+    const prev = input.value || '';
+    const caret = (input.selectionStart ?? prev.length);
+
+    // сколько цифр было слева от курсора
+    const digitsLeft = prev.slice(0, caret).replace(/\D/g,'').length;
+
+    // оставляем только цифры
+    let raw = prev.replace(/\D/g,'');
+    raw = raw.replace(/^0+(?=\d)/,'');
+    // не форсируем 0 во время ввода, только на blur
+    if (!raw) {
+      input.value = '';
+      markDirty(' ');
+      return;
+    }
+
+    // форматируем разряды пробелами
+    const formatted = raw.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    input.value = formatted;
+
+    // восстанавливаем позицию курсора по количеству цифр слева
+    let pos = 0, count = 0;
+    while (pos < input.value.length && count < digitsLeft) {
+      if (/\d/.test(input.value[pos])) count++;
+      pos++;
+    }
+    try { input.setSelectionRange(pos, pos); } catch (e) {}
+
+    markDirty(' ');
   });
+
 }
 
 async function init(){
@@ -369,7 +445,7 @@ async function init(){
     buildYearSelects();
     bindUI();
 
-    el('status').textContent = 'Введите сумму и нажмите «Рассчитать».';
+    markDirty('Введите сумму, выберите годы и нажмите «Рассчитать».');
   } catch (err) {
     console.error(err);
     el('status').textContent = 'Не удалось загрузить данные. Проверьте, что сайт открыт через http:// (а не file://).';

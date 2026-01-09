@@ -190,9 +190,52 @@
     .modal p{margin:0 0 10px;color:var(--muted);line-height:1.5}
     .modal .close{margin-top:8px}
     .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+  
+    .ico{width:16px;height:16px;vertical-align:-3px;margin-right:8px;color:rgba(255,255,255,.85)}
+    .btn .ico{margin-right:8px}
+    .labelrow{display:flex;align-items:center;gap:10px}
+    .labelrow .help{margin-left:6px}
   </style>
 </head>
 <body>
+<!-- Icon set (inline SVG, single style) -->
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="i-home" viewBox="0 0 24 24">
+      <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-help" viewBox="0 0 24 24">
+      <path d="M12 18h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M9.2 9a3 3 0 1 1 4.6 2.6c-.9.55-1.3 1-1.3 2.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M12 22a10 10 0 1 0-10-10 10 10 0 0 0 12 22z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24">
+      <path d="M9 9h10v12H9z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M5 15H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-money" viewBox="0 0 24 24">
+      <path d="M3 7h18v10H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M7 12a5 5 0 0 0 10 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M6 9h.01M18 15h.01" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24">
+      <path d="M7 3v3M17 3v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M4 7h16v14H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M4 11h16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24">
+      <path d="M7 7h14l-3-3M17 17H3l3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-list" viewBox="0 0 24 24">
+      <path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24">
+      <path d="M6 3h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      <path d="M7 7h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      <path d="M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 19h.01M12 19h.01M16 19h.01" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
   <div class="wrap">
     <div class="top">
       <div class="brand">
@@ -203,7 +246,7 @@
         </div>
       </div>
       <div class="actions">
-        <button class="btn" id="helpOpen">Справка</button>
+        <button class="btn" id="helpOpen"><svg class="ico"><use href="#i-help"></use></svg>Справка</button>
         <button class="btn" id="copyBtn">Копировать результат</button>
       </div>
     </div>
@@ -214,18 +257,18 @@
 
         <div class="row">
           <div class="field">
-            <label>Сколько стоило
+            <label><span class="labelrow"><svg class="ico"><use href="#i-money"></use></svg>Сколько стоило</span>
               <span class="help" data-help="h_amount">?</span>
               <span class="popover" id="h_amount"><b>Сумма</b> в рублях в выбранном исходном году. Пример: цена телефона в 2010.</span>
             </label>
             <div class="money">
               <span>₽</span>
-              <input id="amount" inputmode="numeric" placeholder="100 000" />
+              <input id="amount" inputmode="numeric" placeholder="0" value="0"/>
             </div>
           </div>
 
           <div class="field">
-            <label>Категория цен
+            <label><span class="labelrow"><svg class="ico"><use href="#i-list"></use></svg>Категория цен</span>
               <span class="help" data-help="h_cat">?</span>
               <span class="popover" id="h_cat">Выберите общий индекс или конкретную группу товаров/услуг.</span>
             </label>
@@ -253,12 +296,12 @@
 
         <div class="swapline">
           <div id="directionText">—</div>
-          <button class="swapbtn" id="swapBtn" title="Поменять годы местами">↔ Поменять</button>
+          <button class="swapbtn" id="swapBtn"><svg class="ico" style="margin-right:6px"><use href="#i-swap"></use></svg>Поменять</button>
         </div>
 
         <div class="cta">
           <button class="btn" id="resetBtn">Сброс</button>
-          <button class="btn primary" id="calcBtn">Рассчитать</button>
+          <button class="btn primary" id="calcBtn"><svg class="ico"><use href="#i-calc"></use></svg>Рассчитать</button>
         </div>
 
         <div class="status" id="status">Загрузка данных…</div>
