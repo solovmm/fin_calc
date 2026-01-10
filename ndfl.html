@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Калькулятор НДФЛ</title>
+  <link rel="stylesheet" href="./assets/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 14c0 3 2.7 5 6 5s6-2 6-5c0-2.7-2.2-4.2-5-4.8V3h-2v5.9C9.2 9.6 7 11.3 7 14Z" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M5 6h6" stroke="white" stroke-width="1.8" stroke-linecap="round" opacity=".9"/>
+          </svg>
+        </div>
+        <div class="title">
+          <b>Калькулятор НДФЛ</b>
+          <span>Считает налог, сумму на руки и эффективную ставку</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="pill" href="./index.html" title="На главную">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 10.5 12 4l8 6.5V20a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 14 20v-4a2 2 0 0 0-4 0v4a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 4 20v-9.5Z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          Главная
+        </a>
+        <button class="pill" id="copyBtn" type="button" title="Копировать результат">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h10v12H9V9Z" stroke="white" stroke-width="1.7"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" stroke="white" stroke-width="1.7"/></svg>
+          Копировать
+        </button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <a class="tab" href="./inflation.html">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5" stroke="white" stroke-width="1.7"/><path d="M4 16c3-6 6 6 9 0s4-2 7-5" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Инфляция
+      </a>
+      <a class="tab active" href="./ndfl.html">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h14M5 17h14" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>
+        НДФЛ
+      </a>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: PARAMETERS -->
+      <section class="card">
+        <div class="head">
+          <div>
+            <h2>Параметры</h2>
+            <p id="dirtyText">Введите параметры и нажмите «Рассчитать».</p>
+          </div>
+          <span class="badge" id="statusBadge" style="display:none">Готово</span>
+        </div>
+
+        <div class="body">
+          <div class="form" id="ndflForm">
+            <div class="row2">
+              <div class="field">
+                <label>
+                  Вид дохода
+                  <span class="q" data-tt-title="Вид дохода" data-tt="Пока доступны: заработная плата и проценты по вкладам. Другие виды добавим позже.">?</span>
+                </label>
+                <div class="control">
+                  <select id="incomeType">
+                    <option value="salary">Заработная плата</option>
+                    <option value="deposit">Проценты по вкладам</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>
+                  Налоговый год
+                  <span class="q" data-tt-title="Налоговый год" data-tt="Нужен, чтобы подставить шкалу ставок и параметры по году. Если нужно, отредактируйте ndfl_rules.json.">?</span>
+                </label>
+                <div class="control">
+                  <select id="taxYear"></select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row2">
+              <div class="field">
+                <label>
+                  Сумма за год
+                  <span class="q" data-tt-title="Сумма за год" data-tt="Вводите годовую сумму дохода. Для зарплаты: сумма начислений за год. Для вкладов: сумма процентов, полученных за год.">?</span>
+                </label>
+                <div class="control has-prefix">
+                  <span class="prefix">₽</span>
+                  <input class="input" id="amount" inputmode="numeric" autocomplete="off" value="0"/>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>
+                  Сумма указана как
+                  <span class="q" data-tt-title="До налога или на руки" data-tt="Если выбрано «на руки», калькулятор восстановит сумму «до налога» автоматически.">?</span>
+                </label>
+                <div class="seg" id="amountMode">
+                  <button type="button" data-value="gross">до налога</button>
+                  <button type="button" data-value="net">на руки</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row2">
+              <div class="field">
+                <label>
+                  Налоговый вычет (если есть)
+                  <span class="q" data-tt-title="Вычет" data-tt="Сумма вычета уменьшает налоговую базу. Если не уверены — оставьте 0.">?</span>
+                </label>
+                <div class="control has-prefix">
+                  <span class="prefix">₽</span>
+                  <input class="input" id="deduction" inputmode="numeric" autocomplete="off" value="0"/>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>
+                  Статус
+                  <span class="q" data-tt-title="Статус" data-tt="Нерезидент — ставка может отличаться. В прототипе для нерезидента используется плоская ставка из ndfl_rules.json.">?</span>
+                </label>
+                <div class="control">
+ թվական
+                  <select id="status">
+                    <option value="resident">Налогоплательщик резидент</option>
+                    <option value="nonresident">Налогоплательщик нерезидент</option>
+                    <option value="nonresident_resident_rate">Нерезидент, но ставка как у резидента</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <details class="accordion" id="extraBlock">
+              <summary>
+                <span>Дополнительные параметры</span>
+                <span style="opacity:.75">▾</span>
+              </summary>
+              <div class="content">
+                <div class="form">
+                  <div class="field">
+                    <label>
+                      Районный коэффициент (РК) и северная надбавка
+                      <span class="q" data-tt-title="РК и северная надбавка" data-tt="Опционально. Если вы не уверены, оставьте выключенным.">?</span>
+                    </label>
+                    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                      <label style="display:flex; align-items:center; gap:10px; font-weight:800; color:rgba(255,255,255,.78); font-size:13px; margin:0;">
+                        <input type="checkbox" id="useRegional" style="transform:scale(1.1)"/>
+                        Учитывать РК и северную надбавку
+                      </label>
+                    </div>
+                    <div class="row2" style="margin-top:10px" id="regionalFields" hidden>
+                      <div class="field">
+                        <label>Районный коэффициент (РК), %</label>
+                        <div class="control has-suffix">
+                          <input class="input" id="rkPct" inputmode="decimal" value="0"/>
+                          <span class="suffix">%</span>
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label>Северная надбавка, %</label>
+                        <div class="control has-suffix">
+                          <input class="input" id="northPct" inputmode="decimal" value="0"/>
+                          <span class="suffix">%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="field" id="depositLimitBlock" hidden>
+                    <label>
+                      Для процентов по вкладам: необлагаемый лимит
+                      <span class="q" data-tt-title="Необлагаемый лимит" data-tt="Лимит = 1 000 000 × максимальная ключевая ставка (в %). Вы можете ввести свою максимальную ставку для нужного года.">?</span>
+                    </label>
+                    <div class="row2">
+                      <div class="field">
+                        <label>Максимальная ключевая ставка за год, %</label>
+                        <div class="control has-suffix">
+                          <input class="input" id="maxKeyRate" inputmode="decimal" value="16.0"/>
+                          <span class="suffix">%</span>
+                        </div>
+                        <div class="hint">Можно изменить вручную.</div>
+                      </div>
+                      <div class="field">
+                        <label>База лимита (по умолчанию 1 000 000 ₽)</label>
+                        <div class="control has-prefix">
+                          <span class="prefix">₽</span>
+                          <input class="input" id="limitBase" inputmode="numeric" value="1000000"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="notice" id="limitPreview">Необлагаемый лимит: —</div>
+                  </div>
+
+                </div>
+              </div>
+            </details>
+
+            <div class="row2" style="align-items:end">
+              <div class="notice" id="calcNotice" style="margin:0">
+                Параметры изменены. Нажмите «Рассчитать».
+              </div>
+              <button class="btn" id="calcBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M7 11h10M7 15h6" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="white" stroke-width="1.8"/></svg>
+                Рассчитать
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: RESULT -->
+      <section class="card">
+        <div class="head">
+          <div>
+            <h2>Результат</h2>
+            <p id="resultSubtitle">—</p>
+          </div>
+        </div>
+
+        <div class="body">
+          <div class="big" id="resMain">—</div>
+          <div class="sub" id="resExplain">Введите параметры слева и нажмите «Рассчитать».</div>
+
+          <div class="kpi">
+            <div class="k">
+              <div class="t">НДФЛ</div>
+              <div class="v" id="kTax">—</div>
+            </div>
+            <div class="k">
+              <div class="t">Сумма до налога</div>
+              <div class="v" id="kGross">—</div>
+            </div>
+            <div class="k">
+              <div class="t">Эффективная ставка</div>
+              <div class="v" id="kEff">—</div>
+            </div>
+          </div>
+
+          <details class="accordion" open>
+            <summary>
+              <span>Детали расчёта</span>
+              <span style="opacity:.75">▾</span>
+            </summary>
+            <div class="content">
+              <div class="notice" id="baseLine">Налогооблагаемая база: —</div>
+              <div style="margin-top:10px">
+                <canvas id="bar" style="width:100%;height:38px; display:block"></canvas>
+              </div>
+              <div class="sep"></div>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Диапазон</th>
+                    <th>База</th>
+                    <th>Ставка</th>
+                    <th>Налог</th>
+                  </tr>
+                </thead>
+                <tbody id="breakdownBody">
+                  <tr><td colspan="4" style="color:rgba(255,255,255,.55); font-weight:700">—</td></tr>
+                </tbody>
+              </table>
+              <div class="sep"></div>
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+                <div style="font-weight:950">Итого налог:</div>
+                <div style="font-weight:950" id="taxTotalLine">—</div>
+              </div>
+            </div>
+          </details>
+
+          <div class="notice" id="footnote" style="display:none">
+            Примечание: расчёт носит справочный характер.
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<script type="module" src="./assets/ndfl.js"></script>
+</body>
+</html>
