@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Инфляционный калькулятор</title>
+  <link rel="stylesheet" href="./assets/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 18V6" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M4 15c3.2-6 6.2 6 9.4 0 2.1-3.9 4.1-3.2 6.6-5.4" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="title">
+          <b>Инфляционный калькулятор</b>
+          <span>Пересчитывает цену из года X в цены года Y</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="pill" href="./index.html" title="На главную">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 10.5 12 4l8 6.5V20a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 14 20v-4a2 2 0 0 0-4 0v4a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 4 20v-9.5Z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          Главная
+        </a>
+        <button class="pill" id="swapBtn" type="button" title="Поменять годы местами">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 7h12M7 7l3-3M7 7l3 3" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 17H5m12 0-3-3m3 3-3 3" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Поменять годы
+        </button>
+        <button class="pill" id="copyBtn" type="button" title="Копировать результат">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M9 9h10v12H9V9Z" stroke="white" stroke-width="1.7"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" stroke="white" stroke-width="1.7"/></svg>
+          Копировать
+        </button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <a class="tab active" href="./inflation.html">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5" stroke="white" stroke-width="1.7"/><path d="M4 16c3-6 6 6 9 0s4-2 7-5" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Инфляция
+      </a>
+      <a class="tab" href="./ndfl.html">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h14M5 17h14" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>
+        НДФЛ
+      </a>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <div class="head">
+          <div>
+            <h2>Параметры</h2>
+            <p id="hintTop">Введите цену и выберите годы. Расчёт выполняется по кнопке.</p>
+          </div>
+        </div>
+        <div class="body">
+          <div class="form" id="inflForm">
+            <div class="field">
+              <label>
+                Цена (в рублях, за выбранный год)
+                <span class="q" data-tt-title="Цена" data-tt="Введите цену в рублях в ценах года, который выберете ниже.">?</span>
+              </label>
+              <div class="control has-prefix">
+                <span class="prefix">₽</span>
+                <input class="input" id="price" inputmode="numeric" value="0" autocomplete="off"/>
+              </div>
+            </div>
+
+            <div class="row2">
+              <div class="field">
+                <label>
+                  Год, к которому относится цена
+                  <span class="q" data-tt-title="Исходный год" data-tt="В каком году была эта цена?">?</span>
+                </label>
+                <div class="control">
+                  <select id="fromYear"></select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>
+                  Пересчитать в цены года
+                  <span class="q" data-tt-title="Целевой год" data-tt="В какой год вы хотите перевести цену?">?</span>
+                </label>
+                <div class="control">
+                  <select id="toYear"></select>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>
+                Категория цен
+                <span class="q" data-tt-title="Категория" data-tt="Выберите общий ИПЦ или конкретную группу. Список формируется из вашего JSON.">?</span>
+              </label>
+              <div class="control">
+                <select id="series"></select>
+              </div>
+            </div>
+
+            <div class="row2" style="align-items:end">
+              <div class="notice" id="inflNotice" style="margin:0">Параметры изменены. Нажмите «Рассчитать».</div>
+              <button class="btn" type="button" id="calcBtn">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M7 11h10M7 15h6" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="white" stroke-width="1.8"/></svg>
+                Рассчитать
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="head">
+          <div>
+            <h2>Результат</h2>
+            <p id="resSub">—</p>
+          </div>
+        </div>
+        <div class="body">
+          <div class="big" id="resMain">—</div>
+          <div class="sub" id="resExplain">Введите параметры слева и нажмите «Рассчитать».</div>
+
+          <div class="kpi">
+            <div class="k">
+              <div class="t">Разница</div>
+              <div class="v" id="kDiff">—</div>
+            </div>
+            <div class="k">
+              <div class="t">В процентах</div>
+              <div class="v" id="kPct">—</div>
+            </div>
+            <div class="k">
+              <div class="t">Во сколько раз</div>
+              <div class="v" id="kMul">—</div>
+            </div>
+          </div>
+
+          <details class="accordion" open>
+            <summary>
+              <span>Эквивалент по годам</span>
+              <span style="opacity:.75">▾</span>
+            </summary>
+            <div class="content">
+              <canvas id="bar" style="width:100%;height:38px; display:block"></canvas>
+              <div class="notice" id="mini" style="margin-top:10px">—</div>
+            </div>
+          </details>
+        </div>
+      </section>
+    </div>
+  </div>
+
+<script type="module" src="./assets/inflation.js"></script>
+</body>
+</html>
