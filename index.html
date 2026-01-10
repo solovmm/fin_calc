@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Fin_calc — Калькуляторы</title>
+  <link rel="stylesheet" href="./assets/style.css"/>
+  <style>
+    .hero{
+      margin-top: 10px;
+      padding: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      box-shadow: var(--shadow);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    }
+    .hero h1{margin:0; font-size: 26px}
+    .hero p{margin:8px 0 0; color: rgba(255,255,255,.65); line-height:1.35}
+    .cards{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media(max-width:980px){ .cards{grid-template-columns:1fr} }
+    .tile{
+      padding: 16px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      box-shadow: var(--shadow);
+      display:flex; gap:14px; align-items:flex-start;
+    }
+    .tile .ic{
+      width:44px; height:44px; border-radius: 16px;
+      background: rgba(139,92,246,.18);
+      border: 1px solid rgba(139,92,246,.26);
+      display:grid; place-items:center;
+      flex: 0 0 auto;
+    }
+    .tile .ic.green{
+      background: rgba(34,197,94,.14);
+      border-color: rgba(34,197,94,.22);
+    }
+    .tile h3{margin:0; font-size: 16px}
+    .tile p{margin:6px 0 0; color: rgba(255,255,255,.65); line-height:1.35; font-size: 13px}
+    .tile .go{margin-top: 10px; display:inline-flex; gap:8px; align-items:center; font-weight:900; color: rgba(255,255,255,.92)}
+    .tile:hover{background: rgba(255,255,255,.075)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 3v18" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M6 7h10a3 3 0 0 1 0 6H8a3 3 0 0 0 0 6h10" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="title">
+          <b>Fin_calc</b>
+          <span>Набор финансовых калькуляторов (MVP)</span>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="pill" href="./inflation.html">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5" stroke="white" stroke-width="1.7"/><path d="M4 16c3-6 6 6 9 0s4-2 7-5" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Инфляция
+        </a>
+        <a class="pill" href="./ndfl.html">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 7h14M5 12h14M5 17h14" stroke="white" stroke-width="1.7" stroke-linecap="round"/></svg>
+          НДФЛ
+        </a>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div>
+        <h1>Выберите калькулятор</h1>
+        <p>Два модуля в одном стиле. Позже добавим новые расчёты.</p>
+      </div>
+      <span class="badge">Версия: MVP</span>
+    </div>
+
+    <div class="cards">
+      <a class="tile" href="./inflation.html">
+        <div class="ic green" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+            <path d="M4 19V5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M4 16c3-6 6 6 9 0s4-2 7-5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Инфляция</h3>
+          <p>Пересчёт цены из одного года в цены другого года по выбранной категории ИПЦ.</p>
+          <div class="go">Открыть <span style="opacity:.85">→</span></div>
+        </div>
+      </a>
+
+      <a class="tile" href="./ndfl.html">
+        <div class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+            <path d="M7 11h10M7 15h6" stroke="white" stroke-width="1.9" stroke-linecap="round"/>
+            <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="white" stroke-width="1.9"/>
+          </svg>
+        </div>
+        <div>
+          <h3>НДФЛ</h3>
+          <p>Расчёт налога, суммы на руки и эффективной ставки. Есть детализация по ставкам и визуальный бар.</p>
+          <div class="go">Открыть <span style="opacity:.85">→</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="notice" style="margin-top:16px">
+      Данные инфляции собраны из файла new.xls (Росстат, раздел 22). Если вы обновите исходный файл, перегенерируйте JSON.
+    </div>
+  </div>
+</body>
+</html>
