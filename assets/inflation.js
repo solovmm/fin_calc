@@ -1,4 +1,3 @@
-
 import {
   fmtMoney, fmtNumber, attachMoneyFormatter, getMoneyValue, setMoneyValue,
   bindTooltips, copyText, drawStackBar
@@ -19,7 +18,7 @@ const els = {
   kDiff: document.getElementById("kDiff"),
   kPct: document.getElementById("kPct"),
   kMul: document.getElementById("kMul"),
-  bar: document.getElementById("bar"),
+  inflChart: document.getElementById("inflChart"),
   mini: document.getElementById("mini"),
 };
 
@@ -32,13 +31,12 @@ let last = null;
 
 await init();
 
-
 function normalizeDB(raw){
   if(!raw) throw new Error("Пустой JSON.");
-
+  
   // Native format (preferred)
   if(raw.series && raw.years) return raw;
-
+  
   // Format: { inflation_annual: { "2024": 9.5, ... } }
   if(raw.inflation_annual && typeof raw.inflation_annual === "object"){
     const infl = raw.inflation_annual;
@@ -55,7 +53,7 @@ function normalizeDB(raw){
       }]
     };
   }
-
+  
   // Format: { categories: { id: { name: "...", 2024: 9.5, ... }, ... } }
   if(raw.categories && typeof raw.categories === "object"){
     const series = [];
@@ -85,7 +83,7 @@ function normalizeDB(raw){
       series
     };
   }
-
+  
   // Format: { "2000": 20.2, "2001": 18.6, ... } (plain year->rate)
   const keys = Object.keys(raw);
   if(keys.length && keys.every(k=>/^\d{4}$/.test(k))){
@@ -104,27 +102,28 @@ function normalizeDB(raw){
       }]
     };
   }
-
+  
   throw new Error("Неизвестный формат JSON. Нужны поля series/years или inflation_annual или categories.");
 }
 
 async function init(){
   try{
-  const raw = await fetchJson("./inflation_ru_full_1991_2024.json");
-  db = normalizeDB(raw);
-}catch(e){
-  console.error(e);
-  els.resSub.textContent = "Ошибка загрузки данных";
-  els.resMain.textContent = "—";
-  els.resExplain.textContent = "Не удалось загрузить JSON с инфляцией. Проверьте, что файл inflation_ru_full_1991_2024.json лежит рядом с inflation.html и имеет корректный формат.";
-  els.kDiff.textContent = "—";
-  els.kPct.textContent = "—";
-  els.kMul.textContent = "—";
-  els.bar.innerHTML = "";
-  els.mini.innerHTML = "";
-  return;
-}
-fillYears();
+    const raw = await fetchJson("./inflation_ru_full_1991_2024.json");
+    db = normalizeDB(raw);
+  }catch(e){
+    console.error(e);
+    els.resSub.textContent = "Ошибка загрузки данных";
+    els.resMain.textContent = "—";
+    els.resExplain.textContent = "Не удалось загрузить JSON с инфляцией. Проверьте, что файл inflation_ru_full_1991_2024.json лежит рядом с inflation.html и имеет корректный формат.";
+    els.kDiff.textContent = "—";
+    els.kPct.textContent = "—";
+    els.kMul.textContent = "—";
+    if(els.inflChart) els.inflChart.getContext('2d').clearRect(0, 0, els.inflChart.width, els.inflChart.height);
+    els.mini.innerHTML = "";
+    return;
+  }
+  
+  fillYears();
   fillSeries();
   // defaults: 2020 -> 2024 if available
   setDefaultYears();
@@ -143,21 +142,17 @@ function fillYears(){
     els.fromYear.appendChild(o1);
     els.toYear.appendChild(o2);
   });
-
   els.fromYear.addEventListener("change", markDirty);
   els.toYear.addEventListener("change", markDirty);
   els.series.addEventListener("change", markDirty);
   els.price.addEventListener("money:changed", markDirty);
-
   els.swapBtn.addEventListener("click", ()=>{
     const a=els.fromYear.value;
     els.fromYear.value = els.toYear.value;
     els.toYear.value = a;
     markDirty();
   });
-
   els.calcBtn.addEventListener("click", calculate);
-
   els.copyBtn.addEventListener("click", async ()=>{
     if(!last){
       await copyText("Инфляционный калькулятор: результата пока нет.");
@@ -186,7 +181,6 @@ function fillSeries(){
   arr.forEach(s=>{
     if(!ids.has(s.id)) ordered.push(s);
   });
-
   els.series.innerHTML = "";
   ordered.forEach(s=>{
     const opt = document.createElement("option");
@@ -223,7 +217,10 @@ function renderEmpty(){
   els.kPct.textContent = "—";
   els.kMul.textContent = "—";
   els.mini.textContent = "—";
-  drawStackBar(els.bar, [{value:1, color:"rgba(255,255,255,0.12)"}]);
+  if(els.inflChart){
+    const ctx = els.inflChart.getContext('2d');
+    ctx.clearRect(0, 0, els.inflChart.width, els.inflChart.height);
+  }
 }
 
 function calculate(){
@@ -236,31 +233,29 @@ function calculate(){
     alert("Категория не найдена в JSON.");
     return;
   }
+  
   if(fromYear === toYear){
     alert("Выберите разные годы.");
     return;
   }
-
+  
   const mul = computeMultiplier(s.inflationPct, fromYear, toYear);
   const result = amount * mul;
   const diff = result - amount;
   const pct = (amount>0) ? (diff/amount*100) : 0;
-
+  
   last = {amount, fromYear, toYear, mul, result, diff, pct, seriesName:s.name};
-
   els.resSub.textContent = s.name;
   els.resMain.textContent = fmtMoney(result);
   els.resExplain.textContent = `${fmtMoney(amount)} в ${fromYear} году = ${fmtMoney(result)} в ценах ${toYear} года.`;
   els.kDiff.textContent = fmtMoney(diff);
   els.kPct.textContent = (pct>=0?"+":"") + pct.toFixed(1) + "%";
   els.kMul.textContent = mul.toFixed(2) + "x";
-
-  // mini timeline (start, mid, end)
-  const path = buildMiniPoints(amount, s.inflationPct, fromYear, toYear);
-  const parts = path.parts;
-  drawStackBar(els.bar, parts);
-  els.mini.textContent = `${fromYear}: ${fmtMoney(path.a)} · ${path.midYear}: ${fmtMoney(path.mid)} · ${toYear}: ${fmtMoney(path.b)}`;
-
+  
+  // Draw yearly chart
+  drawYearlyChart(els.inflChart, s.inflationPct, fromYear, toYear);
+  els.mini.textContent = `Динамика годовой инфляции: ${fromYear}–${toYear}`;
+  
   dirty = false;
   els.inflNotice.textContent = "Готово.";
 }
@@ -270,42 +265,96 @@ function computeMultiplier(inflByYear, fromYear, toYear){
   let mul = 1.0;
   if(fromYear < toYear){
     for(let y=fromYear; y<toYear; y++){
-      const r = inflByYear[String(y)];
-      const rate = (r==null) ? 0 : (parseFloat(r)/100);
-      mul *= (1 + rate);
+      const rate = parseFloat(inflByYear[String(y+1)] || 0);
+      mul *= (1 + rate/100);
     }
-  }else{
-    // reverse
-    for(let y=toYear; y<fromYear; y++){
-      const r = inflByYear[String(y)];
-      const rate = (r==null) ? 0 : (parseFloat(r)/100);
-      mul /= (1 + rate);
+  } else {
+    for(let y=fromYear; y>toYear; y--){
+      const rate = parseFloat(inflByYear[String(y)] || 0);
+      mul /= (1 + rate/100);
     }
   }
   return mul;
 }
 
-function buildMiniPoints(amount, inflByYear, fromYear, toYear){
-  const dir = fromYear < toYear ? 1 : -1;
+function drawYearlyChart(canvasEl, inflByYear, fromYear, toYear){
+  if(!canvasEl || !inflByYear) return;
+  
   const years = [];
-  if(dir===1){
+  if(fromYear < toYear){
     for(let y=fromYear; y<=toYear; y++) years.push(y);
-  }else{
+  } else {
     for(let y=fromYear; y>=toYear; y--) years.push(y);
   }
-  const midYear = years[Math.floor(years.length/2)];
-  const a = amount;
-  const mid = amount * computeMultiplier(inflByYear, fromYear, midYear);
-  const b = amount * computeMultiplier(inflByYear, fromYear, toYear);
-
-  // stacked bar parts: growth by segments
-  const parts = [];
-  const total = Math.abs(b-a) || 1;
-  const p1 = Math.abs(mid-a);
-  const p2 = Math.abs(b-mid);
-  parts.push({value:p1, color:"rgba(139,92,246,0.60)"});
-  parts.push({value:p2, color:"rgba(34,197,94,0.55)"});
-  return {a, mid, b, midYear, parts};
+  
+  const inflData = years.map(y => parseFloat(inflByYear[String(y)] || 0));
+  const ctx = canvasEl.getContext('2d');
+  const w = canvasEl.width;
+  const h = canvasEl.height;
+  
+  ctx.clearRect(0, 0, w, h);
+  
+  if(inflData.length === 0) return;
+  
+  const maxInfl = Math.max(...inflData, 5);
+  const padding = 50;
+  const chartW = w - padding * 2;
+  const chartH = h - padding * 2;
+  
+  // Grid and axes
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  for(let i=0; i<=5; i++){
+    const y = padding + (chartH/5)*i;
+    ctx.moveTo(padding, y);
+    ctx.lineTo(w-padding, y);
+  }
+  ctx.stroke();
+  
+  // Y-axis labels
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = '11px Inter, sans-serif';
+  ctx.textAlign = 'right';
+  for(let i=0; i<=5; i++){
+    const val = maxInfl * (1 - i/5);
+    const y = padding + (chartH/5)*i;
+    ctx.fillText(val.toFixed(1) + '%', padding-8, y+4);
+  }
+  
+  // Line chart
+  ctx.strokeStyle = '#8b5cf6';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  inflData.forEach((val, i) => {
+    const x = padding + (chartW/(inflData.length-1||1))*i;
+    const y = padding + chartH - (val/maxInfl)*chartH;
+    if(i===0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  
+  // Points
+  ctx.fillStyle = '#8b5cf6';
+  inflData.forEach((val, i) => {
+    const x = padding + (chartW/(inflData.length-1||1))*i;
+    const y = padding + chartH - (val/maxInfl)*chartH;
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI*2);
+    ctx.fill();
+  });
+  
+  // X-axis labels
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.font = '12px Inter, sans-serif';
+  ctx.textAlign = 'center';
+  const step = Math.max(1, Math.ceil(years.length/10));
+  years.forEach((yr, i) => {
+    if(i%step===0 || i===years.length-1){
+      const x = padding + (chartW/(inflData.length-1||1))*i;
+      ctx.fillText(String(yr), x, h-padding+20);
+    }
+  });
 }
 
 async function fetchJson(url){
