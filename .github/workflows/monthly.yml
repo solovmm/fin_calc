@@ -2,7 +2,7 @@ name: Update monthly macro
 
 on:
   schedule:
-    - cron: "30 4 * * *" # daily 04:30 UTC
+    - cron: "30 4 15 * *" # monthly 15th 04:30 UTC
   workflow_dispatch:
 
 permissions:
@@ -30,6 +30,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/macro_monthly.json data/fx_daily.json
+          git add data/macro_monthly.json data/fx_daily.json data/last_updated.json
           git commit -m "Update monthly macro"
           git push

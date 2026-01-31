@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 MACRO_FILE = DATA_DIR / "macro_monthly.json"
 FX_DAILY_FILE = DATA_DIR / "fx_daily.json"
+LAST_UPDATED_FILE = DATA_DIR / "last_updated.json"
 
 START_DATE = datetime(2000, 1, 1)
 
@@ -204,6 +205,18 @@ def load_macro_base():
     return data
 
 
+def update_last_updated(payload):
+    data = {}
+    if LAST_UPDATED_FILE.exists():
+        try:
+            data = json.loads(LAST_UPDATED_FILE.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            data = {}
+    data.update(payload)
+    data["updated_at"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    LAST_UPDATED_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def main():
     macro = load_macro_base()
     series = macro.get("series", [])
@@ -278,6 +291,13 @@ def main():
         new_rows.append(row)
 
     if not new_rows:
+        update_last_updated({
+            "macro_monthly": {
+                "updated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "rows": len(series),
+                "end_month": str(last_month),
+            }
+        })
         print("No new months to append.")
         return
 
@@ -291,6 +311,13 @@ def main():
     macro["meta"].setdefault("source", "CBR + Rosstat")
 
     MACRO_FILE.write_text(json.dumps(macro, ensure_ascii=False, indent=2), encoding="utf-8")
+    update_last_updated({
+        "macro_monthly": {
+            "updated_at": macro["meta"]["generated_at"],
+            "rows": macro["meta"]["rows"],
+            "end_month": series[-1].get("month") if series else None,
+        }
+    })
     print(f"Appended {len(new_rows)} months. Total rows: {len(series)}")
 
 

@@ -9,6 +9,7 @@
 data/
   fx_daily.json
   macro_monthly.json
+  last_updated.json
 scripts/
   update_fx_daily.py
   update_macro_monthly.py
@@ -60,6 +61,6 @@ ROSSTAT_CPI_LOCAL=/path/to/ipc_mes.xlsx python scripts/update_macro_monthly.py
 ## Автообновление
 GitHub Actions:
 - `daily.yml` — ежедневные курсы
-- `monthly.yml` — проверка ежемесячных данных
+- `monthly.yml` — проверка ежемесячных данных (запуск 15-го числа)
 
 Если новых данных нет — коммита не будет.

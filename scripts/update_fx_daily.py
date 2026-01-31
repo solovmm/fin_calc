@@ -8,6 +8,7 @@ import requests
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 OUT_FILE = DATA_DIR / "fx_daily.json"
+LAST_UPDATED_FILE = DATA_DIR / "last_updated.json"
 
 START_DATE = datetime(2000, 1, 1).date()
 DATE_FMT = "%d.%m.%Y"
@@ -88,6 +89,18 @@ def _load_existing():
     return df
 
 
+def _update_last_updated(payload):
+    data = {}
+    if LAST_UPDATED_FILE.exists():
+        try:
+            data = json.loads(LAST_UPDATED_FILE.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            data = {}
+    data.update(payload)
+    data["updated_at"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    LAST_UPDATED_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -143,6 +156,13 @@ def main():
 
     out = {"meta": meta, "series": output_rows}
     OUT_FILE.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+    _update_last_updated({
+        "fx_daily": {
+            "updated_at": meta["updated"],
+            "rows": meta["rows"],
+            "end": meta["end"],
+        }
+    })
     print(f"Saved {OUT_FILE} ({len(output_rows)} rows)")
 
 
