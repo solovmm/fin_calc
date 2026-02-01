@@ -60,9 +60,20 @@ python scripts/update_macro_monthly.py
 ROSSTAT_CPI_LOCAL=/path/to/ipc_mes.xlsx python scripts/update_macro_monthly.py
 ```
 
+Только ставки и курсы (без CPI):
+```
+python scripts/update_macro_monthly.py --mode rates
+```
+
+Только CPI:
+```
+python scripts/update_macro_monthly.py --mode cpi
+```
+
 ## Автообновление
 GitHub Actions:
 - `daily.yml` — ежедневные курсы
-- `monthly.yml` — проверка ежемесячных данных (запуск 15-го числа)
+- `monthly_rates.yml` — ставки и курсы за месяц (1‑го числа, 14:00 UTC)
+- `monthly.yml` — CPI (15‑го числа, 04:30 UTC)
 
 Если новых данных нет — коммита не будет.

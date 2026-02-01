@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 import subprocess
@@ -205,6 +206,17 @@ def load_macro_base():
     return data
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description="Update macro_monthly.json")
+    parser.add_argument(
+        "--mode",
+        choices=["full", "rates", "cpi"],
+        default=os.getenv("MACRO_UPDATE_MODE", "full"),
+        help="full: rates + CPI (only when all data available), rates: append rates without CPI, cpi: fill CPI only",
+    )
+    return parser.parse_args()
+
+
 def update_last_updated(payload):
     data = {}
     if LAST_UPDATED_FILE.exists():
@@ -218,6 +230,11 @@ def update_last_updated(payload):
 
 
 def main():
+    args = parse_args()
+    mode = args.mode
+    do_rates = mode in {"full", "rates"}
+    do_cpi = mode in {"full", "cpi"}
+
     macro = load_macro_base()
     series = macro.get("series", [])
     if not series:
@@ -226,71 +243,118 @@ def main():
     last_month_str = max(row.get("month") for row in series if row.get("month"))
     last_month = pd.Period(last_month_str, freq="M")
 
-    fx_daily = load_fx_daily()
-    fx_monthly = compute_fx_monthly(fx_daily)
+    fx_monthly = None
+    key_mean = None
+    key_end = None
+    if do_rates:
+        fx_daily = load_fx_daily()
+        fx_monthly = compute_fx_monthly(fx_daily)
 
-    key_daily = fetch_key_rate_changes()
-    key_mean, key_end = compute_key_rate_monthly(key_daily)
+        key_daily = fetch_key_rate_changes()
+        key_mean, key_end = compute_key_rate_monthly(key_daily)
 
-    cpi = load_cpi()
+    cpi = None
+    if do_cpi:
+        cpi = load_cpi()
 
-    target_months = [m for m in fx_monthly.index if m > last_month]
-    target_months.sort()
+    target_months = []
+    if do_rates:
+        target_months = [m for m in fx_monthly.index if m > last_month]
+        target_months.sort()
 
     rate_fields = []
     for code in FX_CODES:
         rate_fields.append(f"rate_{code.lower()}")
         rate_fields.append(f"rate_{code.lower()}_end")
 
-    # ensure all rows have new fields
-    for row in series:
-        for field in rate_fields:
-            row.setdefault(field, None)
+    if do_rates:
+        # ensure all rows have new fields
+        for row in series:
+            for field in rate_fields:
+                row.setdefault(field, None)
+            row.setdefault("key_rate", None)
+            row.setdefault("key_rate_end", None)
+            row.setdefault("cpi_mom", None)
+            row.setdefault("cpi_yoy", None)
+            row.setdefault("cpi_ytd", None)
 
     new_rows = []
-    for month in target_months:
-        if month not in fx_monthly.index:
-            continue
-        if month not in key_mean.index or month not in key_end.index:
-            continue
-        if month not in cpi.index:
-            continue
+    if do_rates:
+        for month in target_months:
+            if month not in fx_monthly.index:
+                continue
+            if month not in key_mean.index or month not in key_end.index:
+                continue
 
-        fx_row = fx_monthly.loc[month]
-        key_val = key_mean.loc[month]
-        key_val_end = key_end.loc[month]
-        cpi_row = cpi.loc[month]
+            fx_row = fx_monthly.loc[month]
+            key_val = key_mean.loc[month]
+            key_val_end = key_end.loc[month]
 
-        required = [key_val, key_val_end, cpi_row.get("cpi_mom"), cpi_row.get("cpi_yoy"), cpi_row.get("cpi_ytd")]
-        if any(pd.isna(v) for v in required):
-            continue
+            if any(pd.isna(v) for v in [key_val, key_val_end]):
+                continue
 
-        row = {
-            "date": month.to_timestamp().strftime("%Y-%m-%d"),
-            "month": str(month),
-            "key_rate": float(key_val),
-            "key_rate_end": float(key_val_end),
-            "cpi_mom": float(cpi_row["cpi_mom"]),
-            "cpi_yoy": float(cpi_row["cpi_yoy"]),
-            "cpi_ytd": float(cpi_row["cpi_ytd"]),
-        }
+            cpi_row = cpi.loc[month] if do_cpi and month in cpi.index else None
+            if mode == "full":
+                required = [
+                    key_val,
+                    key_val_end,
+                    cpi_row.get("cpi_mom") if cpi_row is not None else None,
+                    cpi_row.get("cpi_yoy") if cpi_row is not None else None,
+                    cpi_row.get("cpi_ytd") if cpi_row is not None else None,
+                ]
+                if any(pd.isna(v) for v in required):
+                    continue
 
-        missing_fx = False
-        for code in FX_CODES:
-            avg_val = fx_row.get(f"rate_{code.lower()}")
-            end_val = fx_row.get(f"rate_{code.lower()}_end")
-            if pd.isna(avg_val) or pd.isna(end_val):
-                missing_fx = True
-                break
-            row[f"rate_{code.lower()}"] = float(avg_val)
-            row[f"rate_{code.lower()}_end"] = float(end_val)
+            row = {
+                "date": month.to_timestamp().strftime("%Y-%m-%d"),
+                "month": str(month),
+                "key_rate": float(key_val),
+                "key_rate_end": float(key_val_end),
+                "cpi_mom": float(cpi_row["cpi_mom"]) if cpi_row is not None and not pd.isna(cpi_row["cpi_mom"]) else None,
+                "cpi_yoy": float(cpi_row["cpi_yoy"]) if cpi_row is not None and not pd.isna(cpi_row["cpi_yoy"]) else None,
+                "cpi_ytd": float(cpi_row["cpi_ytd"]) if cpi_row is not None and not pd.isna(cpi_row["cpi_ytd"]) else None,
+            }
 
-        if missing_fx:
-            continue
+            missing_fx = False
+            for code in FX_CODES:
+                avg_val = fx_row.get(f"rate_{code.lower()}")
+                end_val = fx_row.get(f"rate_{code.lower()}_end")
+                if pd.isna(avg_val) or pd.isna(end_val):
+                    missing_fx = True
+                    break
+                row[f"rate_{code.lower()}"] = float(avg_val)
+                row[f"rate_{code.lower()}_end"] = float(end_val)
 
-        new_rows.append(row)
+            if missing_fx:
+                continue
 
-    if not new_rows:
+            new_rows.append(row)
+
+    updated_cpi_rows = 0
+    if do_cpi and cpi is not None:
+        for row in series:
+            month_str = row.get("month")
+            if not month_str:
+                continue
+            try:
+                month = pd.Period(month_str, freq="M")
+            except Exception:
+                continue
+            if month not in cpi.index:
+                continue
+            cpi_row = cpi.loc[month]
+            required = [cpi_row.get("cpi_mom"), cpi_row.get("cpi_yoy"), cpi_row.get("cpi_ytd")]
+            if any(pd.isna(v) for v in required):
+                continue
+            has_missing = any(pd.isna(row.get(k)) for k in ["cpi_mom", "cpi_yoy", "cpi_ytd"])
+            if not has_missing:
+                continue
+            row["cpi_mom"] = float(cpi_row["cpi_mom"])
+            row["cpi_yoy"] = float(cpi_row["cpi_yoy"])
+            row["cpi_ytd"] = float(cpi_row["cpi_ytd"])
+            updated_cpi_rows += 1
+
+    if not new_rows and updated_cpi_rows == 0:
         update_last_updated({
             "macro_monthly": {
                 "updated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -298,11 +362,12 @@ def main():
                 "end_month": str(last_month),
             }
         })
-        print("No new months to append.")
+        print("No changes to macro_monthly.json.")
         return
 
-    series.extend(new_rows)
-    series.sort(key=lambda r: r.get("month", ""))
+    if new_rows:
+        series.extend(new_rows)
+        series.sort(key=lambda r: r.get("month", ""))
 
     macro["series"] = series
     macro.setdefault("meta", {})
@@ -318,7 +383,7 @@ def main():
             "end_month": series[-1].get("month") if series else None,
         }
     })
-    print(f"Appended {len(new_rows)} months. Total rows: {len(series)}")
+    print(f"Appended {len(new_rows)} months. CPI updated for {updated_cpi_rows} rows. Total rows: {len(series)}")
 
 
 if __name__ == "__main__":

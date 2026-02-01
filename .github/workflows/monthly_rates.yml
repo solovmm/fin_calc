@@ -1,8 +1,8 @@
-name: Update monthly CPI
+name: Update monthly rates
 
 on:
   schedule:
-    - cron: "30 4 15 * *" # monthly 15th 04:30 UTC
+    - cron: "0 14 1 * *" # monthly 1st 14:00 UTC
   workflow_dispatch:
 
 permissions:
@@ -18,8 +18,10 @@ jobs:
           python-version: "3.11"
       - name: Install deps
         run: pip install -r requirements.txt
-      - name: Update CPI in macro_monthly.json
-        run: python scripts/update_macro_monthly.py --mode cpi
+      - name: Update fx_daily.json
+        run: python scripts/update_fx_daily.py
+      - name: Update macro_monthly.json (rates only)
+        run: python scripts/update_macro_monthly.py --mode rates
       - name: Commit changes
         run: |
           if git diff --quiet; then
@@ -28,6 +30,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/macro_monthly.json data/last_updated.json
-          git commit -m "Update monthly CPI"
+          git add data/macro_monthly.json data/fx_daily.json data/last_updated.json
+          git commit -m "Update monthly rates"
           git push
