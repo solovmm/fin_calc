@@ -1,8 +1,8 @@
 {
   "meta": {
     "source": "data_dincalc.xlsx",
-    "generated_at": "2026-02-01T07:57:57Z",
-    "rows": 422
+    "generated_at": "2026-02-01T08:18:39Z",
+    "rows": 421
   },
   "series": [
     {
@@ -11370,33 +11370,6 @@
       "rate_try": 1.8000035483870966,
       "rate_try_end": 1.74566,
       "rate_inr": 0.8554845483870968,
-      "rate_inr_end": 0.824093
-    },
-    {
-      "date": "2026-02-01",
-      "month": "2026-02",
-      "key_rate": 16.0,
-      "key_rate_end": 16.0,
-      "cpi_mom": null,
-      "cpi_yoy": null,
-      "cpi_ytd": null,
-      "rate_usd": 75.7327,
-      "rate_usd_end": 75.7327,
-      "rate_eur": 90.468,
-      "rate_eur_end": 90.468,
-      "rate_cny": 10.8689,
-      "rate_cny_end": 10.8689,
-      "rate_gbp": 104.2385,
-      "rate_gbp_end": 104.2385,
-      "rate_chf": 98.3797,
-      "rate_chf_end": 98.3797,
-      "rate_thb": 2.41233,
-      "rate_thb_end": 2.41233,
-      "rate_idr": 0.004512,
-      "rate_idr_end": 0.004512,
-      "rate_try": 1.74566,
-      "rate_try_end": 1.74566,
-      "rate_inr": 0.824093,
       "rate_inr_end": 0.824093
     }
   ]

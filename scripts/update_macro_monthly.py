@@ -242,6 +242,7 @@ def main():
 
     last_month_str = max(row.get("month") for row in series if row.get("month"))
     last_month = pd.Period(last_month_str, freq="M")
+    current_month = pd.Period(datetime.now(), freq="M")
 
     fx_monthly = None
     key_mean = None
@@ -259,7 +260,7 @@ def main():
 
     target_months = []
     if do_rates:
-        target_months = [m for m in fx_monthly.index if m > last_month]
+        target_months = [m for m in fx_monthly.index if last_month < m < current_month]
         target_months.sort()
 
     rate_fields = []
@@ -339,6 +340,8 @@ def main():
             try:
                 month = pd.Period(month_str, freq="M")
             except Exception:
+                continue
+            if month >= current_month:
                 continue
             if month not in cpi.index:
                 continue
