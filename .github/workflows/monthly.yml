@@ -2,7 +2,11 @@ name: Update monthly CPI
 
 on:
   schedule:
-    - cron: "30 4 15 * *" # monthly 15th 04:30 UTC
+    - cron: "30 4 13 * *" # monthly retry window: 13th 04:30 UTC
+    - cron: "30 4 14 * *" # monthly retry window: 14th 04:30 UTC
+    - cron: "30 4 15 * *" # monthly retry window: 15th 04:30 UTC
+    - cron: "30 4 16 * *" # monthly retry window: 16th 04:30 UTC
+    - cron: "30 4 17 * *" # monthly retry window: 17th 04:30 UTC
   workflow_dispatch:
 
 permissions:
@@ -18,8 +22,8 @@ jobs:
           python-version: "3.11"
       - name: Install deps
         run: pip install -r requirements.txt
-      - name: Update CPI in macro_monthly.json
-        run: python scripts/update_macro_monthly.py --mode cpi
+      - name: Update macro_monthly.json (full retry window)
+        run: python scripts/update_macro_monthly.py --mode full
       - name: Commit changes
         run: |
           if git diff --quiet; then
