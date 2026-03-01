@@ -15,7 +15,7 @@
     ],
     "start": "2000-01-01",
     "end": "2026-03-01",
-    "updated": "2026-03-01T05:01:58Z",
+    "updated": "2026-03-01T14:27:59Z",
     "rows": 9557
   },
   "series": [
@@ -133708,43 +133708,43 @@
     {
       "date": "2026-02-22",
       "rates": {
-        "USD": 76.7519,
-        "EUR": 90.2833,
-        "CNY": 11.0929,
-        "GBP": 103.262,
-        "CHF": 98.9836,
-        "THB": 2.46023,
-        "IDR": 0.004535,
-        "TRY": 1.75511,
-        "INR": 0.843874
+        "USD": null,
+        "EUR": null,
+        "CNY": null,
+        "GBP": null,
+        "CHF": null,
+        "THB": null,
+        "IDR": null,
+        "TRY": null,
+        "INR": null
       }
     },
     {
       "date": "2026-02-23",
       "rates": {
-        "USD": 76.7519,
-        "EUR": 90.2833,
-        "CNY": 11.0929,
-        "GBP": 103.262,
-        "CHF": 98.9836,
-        "THB": 2.46023,
-        "IDR": 0.004535,
-        "TRY": 1.75511,
-        "INR": 0.843874
+        "USD": null,
+        "EUR": null,
+        "CNY": null,
+        "GBP": null,
+        "CHF": null,
+        "THB": null,
+        "IDR": null,
+        "TRY": null,
+        "INR": null
       }
     },
     {
       "date": "2026-02-24",
       "rates": {
-        "USD": 76.7519,
-        "EUR": 90.2833,
-        "CNY": 11.0929,
-        "GBP": 103.262,
-        "CHF": 98.9836,
-        "THB": 2.46023,
-        "IDR": 0.004535,
-        "TRY": 1.75511,
-        "INR": 0.843874
+        "USD": null,
+        "EUR": null,
+        "CNY": null,
+        "GBP": null,
+        "CHF": null,
+        "THB": null,
+        "IDR": null,
+        "TRY": null,
+        "INR": null
       }
     },
     {
