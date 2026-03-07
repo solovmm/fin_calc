@@ -1,0 +1,59 @@
+name: Deploy data assets
+
+on:
+  workflow_run:
+    workflows:
+      - Update daily FX
+      - Update monthly rates
+      - Update monthly CPI
+    types:
+      - completed
+  push:
+    branches:
+      - main
+    paths:
+      - "data/macro_monthly.json"
+      - "data/fx_daily.json"
+      - "data/inflation_ru_full_1991_2024.json"
+      - "scripts/deploy_data_assets.py"
+      - "scripts/health_check.py"
+      - ".github/workflows/deploy_data_assets.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: deploy-data-assets
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Deploy runtime data JSON to Timeweb
+        env:
+          TIMEWEB_FTP_HOST: ${{ secrets.TIMEWEB_FTP_HOST }}
+          TIMEWEB_FTP_PORT: ${{ secrets.TIMEWEB_FTP_PORT }}
+          TIMEWEB_FTP_USER: ${{ secrets.TIMEWEB_FTP_USER }}
+          TIMEWEB_FTP_PASSWORD: ${{ secrets.TIMEWEB_FTP_PASSWORD }}
+          TIMEWEB_FTP_REMOTE_ROOT: ${{ secrets.TIMEWEB_FTP_REMOTE_ROOT }}
+        run: python scripts/deploy_data_assets.py
+
+      - name: Verify production health
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/health_check.py --skip-actions --skip-parity --prod-base https://notboringeconomy.ru/fincalc

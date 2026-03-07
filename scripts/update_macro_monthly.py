@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 import subprocess
+import shutil
 from datetime import datetime
 from pathlib import Path
 
@@ -11,8 +12,11 @@ import urllib3
 from io import BytesIO
 from bs4 import BeautifulSoup
 
-DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+DATA_REPO_ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR = DATA_REPO_ROOT / "data"
 MACRO_FILE = DATA_DIR / "macro_monthly.json"
+SITE_ROOT = DATA_REPO_ROOT.parent if (DATA_REPO_ROOT.parent / "assets").exists() else None
+MACRO_ASSET_FILE = SITE_ROOT / "assets" / "macro_monthly.json" if SITE_ROOT else None
 FX_DAILY_FILE = DATA_DIR / "fx_daily.json"
 LAST_UPDATED_FILE = DATA_DIR / "last_updated.json"
 
@@ -152,16 +156,12 @@ def _read_cpi_excel(content, ext):
 def load_cpi():
     local_override = os.getenv("ROSSTAT_CPI_LOCAL")
     local_path = Path(local_override) if local_override else None
-    bundled_xlsx = DATA_DIR / "rosstat_ipc_mes.xlsx"
 
     content = None
     ext = None
     if local_path and local_path.exists():
         content = local_path.read_bytes()
         ext = local_path.suffix.lower()
-    elif bundled_xlsx.exists():
-        content = bundled_xlsx.read_bytes()
-        ext = bundled_xlsx.suffix.lower()
     else:
         content, ext = _download_cpi_bytes()
 
@@ -227,6 +227,13 @@ def update_last_updated(payload):
     data.update(payload)
     data["updated_at"] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
     LAST_UPDATED_FILE.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def sync_macro_asset() -> None:
+    if MACRO_ASSET_FILE is None:
+        return
+    MACRO_ASSET_FILE.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(MACRO_FILE, MACRO_ASSET_FILE)
 
 
 def main():
@@ -358,6 +365,8 @@ def main():
             updated_cpi_rows += 1
 
     if not new_rows and updated_cpi_rows == 0:
+        if not MACRO_ASSET_FILE.exists() or MACRO_ASSET_FILE.read_bytes() != MACRO_FILE.read_bytes():
+            sync_macro_asset()
         update_last_updated({
             "macro_monthly": {
                 "updated_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -379,6 +388,7 @@ def main():
     macro["meta"].setdefault("source", "CBR + Rosstat")
 
     MACRO_FILE.write_text(json.dumps(macro, ensure_ascii=False, indent=2), encoding="utf-8")
+    sync_macro_asset()
     update_last_updated({
         "macro_monthly": {
             "updated_at": macro["meta"]["generated_at"],
