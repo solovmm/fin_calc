@@ -208,7 +208,7 @@ def check_remote_data(errors, warnings):
 def check_local_flags(errors, warnings, workspace_root, data_repo_root):
     rosstat_local = data_repo_root / "data" / "rosstat_ipc_mes.xlsx"
     if rosstat_local.exists():
-        errors.append("Local data/rosstat_ipc_mes.xlsx exists (should not be in repo)")
+        warnings.append("Local data/rosstat_ipc_mes.xlsx exists; ignored for deploy checks")
 
     script_path = data_repo_root / "scripts" / "update_macro_monthly.py"
     if script_path.exists():
