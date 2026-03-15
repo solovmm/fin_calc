@@ -16,6 +16,7 @@ on:
       - "data/fx_daily.json"
       - "data/inflation_ru_full_1991_2024.json"
       - "scripts/deploy_data_assets.py"
+      - "scripts/deploy_timeweb_ftp.py"
       - "scripts/health_check.py"
       - ".github/workflows/deploy_data_assets.yml"
   workflow_dispatch:
@@ -39,7 +40,7 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install deps
         run: pip install -r requirements.txt
@@ -51,7 +52,7 @@ jobs:
           TIMEWEB_FTP_USER: ${{ secrets.TIMEWEB_FTP_USER }}
           TIMEWEB_FTP_PASSWORD: ${{ secrets.TIMEWEB_FTP_PASSWORD }}
           TIMEWEB_FTP_REMOTE_ROOT: ${{ secrets.TIMEWEB_FTP_REMOTE_ROOT }}
-        run: python scripts/deploy_data_assets.py
+        run: python scripts/deploy_timeweb_ftp.py --user "$TIMEWEB_FTP_USER" --remote-root "$TIMEWEB_FTP_REMOTE_ROOT" --mode data --no-bump-version
 
       - name: Verify production health
         env:

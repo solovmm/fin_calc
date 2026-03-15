@@ -173,6 +173,14 @@ def parse_date(val):
         return None
 
 
+def latest_month_row(payload):
+    series = payload.get("series", []) if isinstance(payload, dict) else []
+    rows = [row for row in series if row.get("month")]
+    if not rows:
+        return None
+    return max(rows, key=lambda row: row.get("month", ""))
+
+
 def check_remote_data(errors, warnings):
     status, ctype = fetch_head(ROSSTAT_CPI_URL)
     if status >= 400:
@@ -208,7 +216,7 @@ def check_remote_data(errors, warnings):
 def check_local_flags(errors, warnings, workspace_root, data_repo_root):
     rosstat_local = data_repo_root / "data" / "rosstat_ipc_mes.xlsx"
     if rosstat_local.exists():
-        warnings.append("Local data/rosstat_ipc_mes.xlsx exists; ignored for deploy checks")
+        errors.append("Local data/rosstat_ipc_mes.xlsx exists (should not be in repo)")
 
     script_path = data_repo_root / "scripts" / "update_macro_monthly.py"
     if script_path.exists():
@@ -450,6 +458,28 @@ def check_prod_site(errors, warnings, prod_base: str):
             warnings.append(f"PROD {rel} missing canonical")
         if 'application/ld+json' not in html:
             warnings.append(f"PROD {rel} missing JSON-LD")
+
+    try:
+        remote_macro = fetch_json(MACRO_URL)
+        prod_macro = fetch_json(f"{base}/assets/macro_monthly.json?v={v}")
+        remote_last = latest_month_row(remote_macro)
+        prod_last = latest_month_row(prod_macro)
+        if not remote_last or not prod_last:
+            errors.append("PROD macro_monthly.json cannot determine latest month row")
+        else:
+            remote_month = remote_last.get("month")
+            prod_month = prod_last.get("month")
+            if remote_month != prod_month:
+                errors.append(f"PROD macro_monthly latest month mismatch: prod={prod_month}, repo={remote_month}")
+            compare_keys = ("cpi_mom", "cpi_yoy", "cpi_ytd", "key_rate", "rate_usd")
+            mismatched = [key for key in compare_keys if prod_last.get(key) != remote_last.get(key)]
+            if mismatched:
+                errors.append(
+                    "PROD macro_monthly.json latest row differs from repo for "
+                    f"{remote_month}: {', '.join(mismatched)}"
+                )
+    except Exception as exc:
+        errors.append(f"PROD macro_monthly freshness check failed: {exc}")
 
 
 def main():
