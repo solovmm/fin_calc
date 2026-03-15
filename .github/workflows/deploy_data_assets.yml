@@ -47,12 +47,9 @@ jobs:
 
       - name: Deploy runtime data JSON to Timeweb
         env:
-          TIMEWEB_FTP_HOST: ${{ secrets.TIMEWEB_FTP_HOST }}
-          TIMEWEB_FTP_PORT: ${{ secrets.TIMEWEB_FTP_PORT }}
           TIMEWEB_FTP_USER: ${{ secrets.TIMEWEB_FTP_USER }}
           TIMEWEB_FTP_PASSWORD: ${{ secrets.TIMEWEB_FTP_PASSWORD }}
-          TIMEWEB_FTP_REMOTE_ROOT: ${{ secrets.TIMEWEB_FTP_REMOTE_ROOT }}
-        run: python scripts/deploy_timeweb_ftp.py --user "$TIMEWEB_FTP_USER" --remote-root "$TIMEWEB_FTP_REMOTE_ROOT" --mode data --no-bump-version
+        run: python scripts/deploy_timeweb_ftp.py --user "$TIMEWEB_FTP_USER" --remote-root /fincalc --mode data --no-bump-version
 
       - name: Verify production health
         env:
