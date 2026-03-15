@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "data_dincalc.xlsx",
-    "generated_at": "2026-03-01T14:28:00Z",
+    "generated_at": "2026-03-15T05:50:18Z",
     "rows": 422
   },
   "series": [
@@ -11377,9 +11377,9 @@
       "month": "2026-02",
       "key_rate": 15.767857142857142,
       "key_rate_end": 15.5,
-      "cpi_mom": null,
-      "cpi_yoy": null,
-      "cpi_ytd": null,
+      "cpi_mom": 0.730000000000004,
+      "cpi_yoy": 5.923516025649556,
+      "cpi_ytd": 2.3618260000000078,
       "rate_usd": 76.9278,
       "rate_usd_end": 77.2736,
       "rate_eur": 91.05057894736842,
