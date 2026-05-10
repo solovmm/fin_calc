@@ -14,9 +14,9 @@
       "INR"
     ],
     "start": "2000-01-01",
-    "end": "2026-05-09",
-    "updated": "2026-05-09T05:59:18Z",
-    "rows": 9626
+    "end": "2026-05-10",
+    "updated": "2026-05-10T06:18:02Z",
+    "rows": 9627
   },
   "series": [
     {
@@ -134674,43 +134674,43 @@
     {
       "date": "2026-05-02",
       "rates": {
-        "USD": 74.8014,
-        "EUR": 88.6429,
-        "CNY": 10.9593,
-        "GBP": 100.9894,
-        "CHF": 94.7093,
-        "THB": 2.28269,
-        "IDR": 0.004318,
-        "TRY": 1.66131,
-        "INR": 0.785385
+        "USD": null,
+        "EUR": null,
+        "CNY": null,
+        "GBP": null,
+        "CHF": null,
+        "THB": null,
+        "IDR": null,
+        "TRY": null,
+        "INR": null
       }
     },
     {
       "date": "2026-05-03",
       "rates": {
-        "USD": 74.8014,
-        "EUR": 88.6429,
-        "CNY": 10.9593,
-        "GBP": 100.9894,
-        "CHF": 94.7093,
-        "THB": 2.28269,
-        "IDR": 0.004318,
-        "TRY": 1.66131,
-        "INR": 0.785385
+        "USD": null,
+        "EUR": null,
+        "CNY": null,
+        "GBP": null,
+        "CHF": null,
+        "THB": null,
+        "IDR": null,
+        "TRY": null,
+        "INR": null
       }
     },
     {
       "date": "2026-05-04",
       "rates": {
-        "USD": 74.8014,
-        "EUR": 88.6429,
-        "CNY": 10.9593,
-        "GBP": 100.9894,
-        "CHF": 94.7093,
-        "THB": 2.28269,
-        "IDR": 0.004318,
-        "TRY": 1.66131,
-        "INR": 0.785385
+        "USD": null,
+        "EUR": null,
+        "CNY": null,
+        "GBP": null,
+        "CHF": null,
+        "THB": null,
+        "IDR": null,
+        "TRY": null,
+        "INR": null
       }
     },
     {
@@ -134771,6 +134771,20 @@
     },
     {
       "date": "2026-05-09",
+      "rates": {
+        "USD": 74.2963,
+        "EUR": 88.549,
+        "CNY": 10.9306,
+        "GBP": 101.2733,
+        "CHF": 95.4597,
+        "THB": 2.30476,
+        "IDR": 0.004279,
+        "TRY": 1.64382,
+        "INR": 0.786733
+      }
+    },
+    {
+      "date": "2026-05-10",
       "rates": {
         "USD": 74.2963,
         "EUR": 88.549,
