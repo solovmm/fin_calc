@@ -1,13 +1,13 @@
 {
   "fx_daily": {
-    "updated_at": "2026-07-01T07:18:50Z",
+    "updated_at": "2026-07-01T16:28:28Z",
     "rows": 9679,
     "end": "2026-07-01"
   },
-  "updated_at": "2026-07-01T07:18:50Z",
+  "updated_at": "2026-07-01T16:28:30Z",
   "macro_monthly": {
-    "updated_at": "2026-06-15T10:43:30Z",
-    "rows": 425,
-    "end_month": "2026-05"
+    "updated_at": "2026-07-01T16:28:30Z",
+    "rows": 426,
+    "end_month": "2026-06"
   }
 }
