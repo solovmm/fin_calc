@@ -1,3 +1,4 @@
+import argparse
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -25,6 +26,16 @@ CURRENCIES = {
     "TRY": ["R01700", "R01700J"],  # сначала R01700 как попросили, затем fallback
     "INR": ["R01270"],
 }
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Update fx_daily.json")
+    parser.add_argument(
+        "--repair-only",
+        action="store_true",
+        help="Repair calendar gaps in the existing file without requesting fresh CBR data",
+    )
+    return parser.parse_args()
 
 
 def _fetch_currency_series(val_ids, start_date, end_date):
@@ -89,6 +100,35 @@ def _load_existing():
     return df
 
 
+def normalize_daily_rates(df, codes=None):
+    """Return one complete calendar row per day with prior CBR rates carried forward."""
+    codes = list(codes or CURRENCIES.keys())
+    if df is None or df.empty:
+        raise ValueError("FX daily data is empty")
+
+    normalized = df.copy()
+    normalized["date"] = pd.to_datetime(normalized["date"])
+    normalized = normalized.sort_values("date")
+    normalized = normalized.drop_duplicates(subset=["date"], keep="last")
+    normalized = normalized.set_index("date")
+
+    full_idx = pd.date_range(normalized.index.min(), normalized.index.max(), freq="D")
+    normalized = normalized.reindex(full_idx)
+    normalized.index.name = "date"
+
+    for code in codes:
+        if code not in normalized.columns:
+            normalized[code] = pd.NA
+    normalized[codes] = normalized[codes].ffill()
+
+    missing = normalized[codes].isna().any()
+    if missing.any():
+        missing_codes = ", ".join(missing.index[missing].tolist())
+        raise ValueError(f"Missing seed rate before first calendar day for: {missing_codes}")
+
+    return normalized.reset_index()
+
+
 def _update_last_updated(payload):
     data = {}
     if LAST_UPDATED_FILE.exists():
@@ -102,37 +142,40 @@ def _update_last_updated(payload):
 
 
 def main():
+    args = parse_args()
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     existing_df = _load_existing()
-    today = datetime.now().date()
-
-    if existing_df is None:
-        fetch_start = START_DATE
+    if args.repair_only:
+        if existing_df is None:
+            raise FileNotFoundError(f"Missing {OUT_FILE}; nothing to repair")
+        df = existing_df
     else:
-        last_date = existing_df["date"].max().date()
-        fetch_start = max(START_DATE, last_date - timedelta(days=7))
+        today = datetime.now().date()
 
-    all_rates = []
-    for code, ids in CURRENCIES.items():
-        series_df = _fetch_currency_series(ids, fetch_start, today)
-        series_df = series_df.rename(columns={"rate": code})
-        all_rates.append(series_df)
+        if existing_df is None:
+            fetch_start = START_DATE
+        else:
+            last_date = existing_df["date"].max().date()
+            fetch_start = max(START_DATE, last_date - timedelta(days=7))
 
-    df = all_rates[0]
-    for other in all_rates[1:]:
-        df = df.merge(other, on="date", how="outer")
+        all_rates = []
+        for code, ids in CURRENCIES.items():
+            series_df = _fetch_currency_series(ids, fetch_start, today)
+            series_df = series_df.rename(columns={"rate": code})
+            all_rates.append(series_df)
 
-    df = df.sort_values("date")
+        df = all_rates[0]
+        for other in all_rates[1:]:
+            df = df.merge(other, on="date", how="outer")
 
-    if existing_df is not None:
-        df = pd.concat([existing_df, df], ignore_index=True)
-        df = df.drop_duplicates(subset=["date"], keep="last")
-        df = df.sort_values("date")
+        if existing_df is not None:
+            df = pd.concat([existing_df, df], ignore_index=True)
 
     df = df[df["date"].dt.date >= START_DATE]
 
     codes = list(CURRENCIES.keys())
+    df = normalize_daily_rates(df, codes)
     output_rows = []
     for _, row in df.iterrows():
         rates = {}

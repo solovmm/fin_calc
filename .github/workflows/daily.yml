@@ -20,6 +20,8 @@ jobs:
         run: pip install -r requirements.txt
       - name: Update fx_daily.json
         run: python scripts/update_fx_daily.py
+      - name: Test FX calendar integrity
+        run: python -m unittest discover -s tests -v
       - name: Commit changes
         run: |
           if git diff --quiet; then

@@ -3,6 +3,14 @@ name: Update monthly rates
 on:
   schedule:
     - cron: "0 14 1 * *" # monthly 1st 14:00 UTC
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/update_fx_daily.py"
+      - "scripts/update_macro_monthly.py"
+      - "tests/test_fx_calendar.py"
+      - ".github/workflows/monthly_rates.yml"
   workflow_dispatch:
 
 permissions:
@@ -20,8 +28,10 @@ jobs:
         run: pip install -r requirements.txt
       - name: Update fx_daily.json
         run: python scripts/update_fx_daily.py
+      - name: Test FX calendar integrity
+        run: python -m unittest discover -s tests -v
       - name: Update macro_monthly.json (rates only)
-        run: python scripts/update_macro_monthly.py --mode rates
+        run: python scripts/update_macro_monthly.py --mode rates --refresh-rates-from 2026-01
       - name: Commit changes
         run: |
           if git diff --quiet; then

@@ -64,10 +64,14 @@ def load_fx_daily():
 
 def compute_fx_monthly(df_daily):
     df_daily = df_daily[FX_CODES].copy()
-    monthly_mean = df_daily.resample("ME").mean()
-    monthly_end = df_daily.resample("ME").last()
-    monthly_mean.index = monthly_mean.index.to_period("M")
-    monthly_end.index = monthly_end.index.to_period("M")
+    df_daily = df_daily.sort_index().asfreq("D").ffill()
+    missing = df_daily[FX_CODES].isna().any()
+    if missing.any():
+        missing_codes = ", ".join(missing.index[missing].tolist())
+        raise ValueError(f"FX daily data has no prior rate for: {missing_codes}")
+    month_index = df_daily.index.to_period("M")
+    monthly_mean = df_daily.groupby(month_index).mean()
+    monthly_end = df_daily.groupby(month_index).last()
 
     out = pd.DataFrame(index=monthly_mean.index)
     for code in FX_CODES:
@@ -214,6 +218,11 @@ def parse_args():
         default=os.getenv("MACRO_UPDATE_MODE", "full"),
         help="full: rates + CPI (only when all data available), rates: append rates without CPI, cpi: fill CPI only",
     )
+    parser.add_argument(
+        "--refresh-rates-from",
+        metavar="YYYY-MM",
+        help="Recalculate existing FX average/end fields from this month; other macro fields are preserved",
+    )
     return parser.parse_args()
 
 
@@ -254,21 +263,19 @@ def main():
     fx_monthly = None
     key_mean = None
     key_end = None
+    target_months = []
     if do_rates:
         fx_daily = load_fx_daily()
         fx_monthly = compute_fx_monthly(fx_daily)
-
-        key_daily = fetch_key_rate_changes()
-        key_mean, key_end = compute_key_rate_monthly(key_daily)
+        target_months = [m for m in fx_monthly.index if last_month < m < current_month]
+        target_months.sort()
+        if target_months:
+            key_daily = fetch_key_rate_changes()
+            key_mean, key_end = compute_key_rate_monthly(key_daily)
 
     cpi = None
     if do_cpi:
         cpi = load_cpi()
-
-    target_months = []
-    if do_rates:
-        target_months = [m for m in fx_monthly.index if last_month < m < current_month]
-        target_months.sort()
 
     rate_fields = []
     for code in FX_CODES:
@@ -338,6 +345,39 @@ def main():
 
             new_rows.append(row)
 
+    refreshed_rate_rows = 0
+    if args.refresh_rates_from:
+        if not do_rates:
+            raise ValueError("--refresh-rates-from requires --mode rates or --mode full")
+        try:
+            refresh_from = pd.Period(args.refresh_rates_from, freq="M")
+        except Exception as exc:
+            raise ValueError("--refresh-rates-from must use YYYY-MM format") from exc
+
+        for row in series:
+            month_str = row.get("month")
+            if not month_str:
+                continue
+            month = pd.Period(month_str, freq="M")
+            if month < refresh_from or month >= current_month or month not in fx_monthly.index:
+                continue
+
+            fx_row = fx_monthly.loc[month]
+            values = {}
+            for code in FX_CODES:
+                avg_field = f"rate_{code.lower()}"
+                end_field = f"rate_{code.lower()}_end"
+                avg_val = fx_row.get(avg_field)
+                end_val = fx_row.get(end_field)
+                if pd.isna(avg_val) or pd.isna(end_val):
+                    raise ValueError(f"Incomplete FX data for {month}: {code}")
+                values[avg_field] = float(avg_val)
+                values[end_field] = float(end_val)
+
+            if any(row.get(field) != value for field, value in values.items()):
+                row.update(values)
+                refreshed_rate_rows += 1
+
     updated_cpi_rows = 0
     if do_cpi and cpi is not None:
         for row in series:
@@ -364,7 +404,7 @@ def main():
             row["cpi_ytd"] = float(cpi_row["cpi_ytd"])
             updated_cpi_rows += 1
 
-    if not new_rows and updated_cpi_rows == 0:
+    if not new_rows and updated_cpi_rows == 0 and refreshed_rate_rows == 0:
         if not MACRO_ASSET_FILE.exists() or MACRO_ASSET_FILE.read_bytes() != MACRO_FILE.read_bytes():
             sync_macro_asset()
         update_last_updated({
@@ -396,7 +436,11 @@ def main():
             "end_month": series[-1].get("month") if series else None,
         }
     })
-    print(f"Appended {len(new_rows)} months. CPI updated for {updated_cpi_rows} rows. Total rows: {len(series)}")
+    print(
+        f"Appended {len(new_rows)} months. "
+        f"FX refreshed for {refreshed_rate_rows} rows. "
+        f"CPI updated for {updated_cpi_rows} rows. Total rows: {len(series)}"
+    )
 
 
 if __name__ == "__main__":
