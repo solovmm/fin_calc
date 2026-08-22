@@ -15,7 +15,7 @@
     ],
     "start": "2000-01-01",
     "end": "2026-08-22",
-    "updated": "2026-08-22T03:53:31Z",
+    "updated": "2026-08-22T10:03:57Z",
     "rows": 9731
   },
   "series": [
@@ -133316,29 +133316,29 @@
     {
       "date": "2026-01-25",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 75.9246,
+        "EUR": 89.0589,
+        "CNY": 10.8724,
+        "GBP": 102.3312,
+        "CHF": 95.9977,
+        "THB": 2.43325,
+        "IDR": 0.004492,
+        "TRY": 1.75493,
+        "INR": 0.828695
       }
     },
     {
       "date": "2026-01-26",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 75.9246,
+        "EUR": 89.0589,
+        "CNY": 10.8724,
+        "GBP": 102.3312,
+        "CHF": 95.9977,
+        "THB": 2.43325,
+        "IDR": 0.004492,
+        "TRY": 1.75493,
+        "INR": 0.828695
       }
     },
     {
@@ -133414,29 +133414,29 @@
     {
       "date": "2026-02-01",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 75.7327,
+        "EUR": 90.468,
+        "CNY": 10.8689,
+        "GBP": 104.2385,
+        "CHF": 98.3797,
+        "THB": 2.41233,
+        "IDR": 0.004512,
+        "TRY": 1.74566,
+        "INR": 0.824093
       }
     },
     {
       "date": "2026-02-02",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 75.7327,
+        "EUR": 90.468,
+        "CNY": 10.8689,
+        "GBP": 104.2385,
+        "CHF": 98.3797,
+        "THB": 2.41233,
+        "IDR": 0.004512,
+        "TRY": 1.74566,
+        "INR": 0.824093
       }
     },
     {
@@ -133512,29 +133512,29 @@
     {
       "date": "2026-02-08",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.054,
+        "EUR": 91.0451,
+        "CNY": 11.1061,
+        "GBP": 104.2387,
+        "CHF": 99.0157,
+        "THB": 2.42958,
+        "IDR": 0.004579,
+        "TRY": 1.77157,
+        "INR": 0.852214
       }
     },
     {
       "date": "2026-02-09",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.054,
+        "EUR": 91.0451,
+        "CNY": 11.1061,
+        "GBP": 104.2387,
+        "CHF": 99.0157,
+        "THB": 2.42958,
+        "IDR": 0.004579,
+        "TRY": 1.77157,
+        "INR": 0.852214
       }
     },
     {
@@ -133610,29 +133610,29 @@
     {
       "date": "2026-02-15",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.1944,
+        "EUR": 91.5575,
+        "CNY": 11.1523,
+        "GBP": 105.4012,
+        "CHF": 100.3046,
+        "THB": 2.48237,
+        "IDR": 0.004588,
+        "TRY": 1.77013,
+        "INR": 0.850707
       }
     },
     {
       "date": "2026-02-16",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.1944,
+        "EUR": 91.5575,
+        "CNY": 11.1523,
+        "GBP": 105.4012,
+        "CHF": 100.3046,
+        "THB": 2.48237,
+        "IDR": 0.004588,
+        "TRY": 1.77013,
+        "INR": 0.850707
       }
     },
     {
@@ -133708,43 +133708,43 @@
     {
       "date": "2026-02-22",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 76.7519,
+        "EUR": 90.2833,
+        "CNY": 11.0929,
+        "GBP": 103.262,
+        "CHF": 98.9836,
+        "THB": 2.46023,
+        "IDR": 0.004535,
+        "TRY": 1.75511,
+        "INR": 0.843874
       }
     },
     {
       "date": "2026-02-23",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 76.7519,
+        "EUR": 90.2833,
+        "CNY": 11.0929,
+        "GBP": 103.262,
+        "CHF": 98.9836,
+        "THB": 2.46023,
+        "IDR": 0.004535,
+        "TRY": 1.75511,
+        "INR": 0.843874
       }
     },
     {
       "date": "2026-02-24",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 76.7519,
+        "EUR": 90.2833,
+        "CNY": 11.0929,
+        "GBP": 103.262,
+        "CHF": 98.9836,
+        "THB": 2.46023,
+        "IDR": 0.004535,
+        "TRY": 1.75511,
+        "INR": 0.843874
       }
     },
     {
@@ -133806,29 +133806,29 @@
     {
       "date": "2026-03-01",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.2736,
+        "EUR": 91.2965,
+        "CNY": 11.2394,
+        "GBP": 104.4353,
+        "CHF": 99.9788,
+        "THB": 2.48804,
+        "IDR": 0.004611,
+        "TRY": 1.76254,
+        "INR": 0.849588
       }
     },
     {
       "date": "2026-03-02",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.2736,
+        "EUR": 91.2965,
+        "CNY": 11.2394,
+        "GBP": 104.4353,
+        "CHF": 99.9788,
+        "THB": 2.48804,
+        "IDR": 0.004611,
+        "TRY": 1.76254,
+        "INR": 0.849588
       }
     },
     {
@@ -133904,43 +133904,43 @@
     {
       "date": "2026-03-08",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 79.15,
+        "EUR": 91.8391,
+        "CNY": 11.4368,
+        "GBP": 105.4515,
+        "CHF": 101.2278,
+        "THB": 2.49244,
+        "IDR": 0.004687,
+        "TRY": 1.80079,
+        "INR": 0.863302
       }
     },
     {
       "date": "2026-03-09",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 79.15,
+        "EUR": 91.8391,
+        "CNY": 11.4368,
+        "GBP": 105.4515,
+        "CHF": 101.2278,
+        "THB": 2.49244,
+        "IDR": 0.004687,
+        "TRY": 1.80079,
+        "INR": 0.863302
       }
     },
     {
       "date": "2026-03-10",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 79.15,
+        "EUR": 91.8391,
+        "CNY": 11.4368,
+        "GBP": 105.4515,
+        "CHF": 101.2278,
+        "THB": 2.49244,
+        "IDR": 0.004687,
+        "TRY": 1.80079,
+        "INR": 0.863302
       }
     },
     {
@@ -134002,29 +134002,29 @@
     {
       "date": "2026-03-15",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 80.2254,
+        "EUR": 91.9847,
+        "CNY": 11.6504,
+        "GBP": 107.0929,
+        "CHF": 101.7701,
+        "THB": 2.48892,
+        "IDR": 0.004747,
+        "TRY": 1.82038,
+        "INR": 0.86786
       }
     },
     {
       "date": "2026-03-16",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 80.2254,
+        "EUR": 91.9847,
+        "CNY": 11.6504,
+        "GBP": 107.0929,
+        "CHF": 101.7701,
+        "THB": 2.48892,
+        "IDR": 0.004747,
+        "TRY": 1.82038,
+        "INR": 0.86786
       }
     },
     {
@@ -134100,29 +134100,29 @@
     {
       "date": "2026-03-22",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 83.9982,
+        "EUR": 97.2886,
+        "CNY": 12.2171,
+        "GBP": 112.2132,
+        "CHF": 106.5561,
+        "THB": 2.57111,
+        "IDR": 0.004944,
+        "TRY": 1.90161,
+        "INR": 0.899836
       }
     },
     {
       "date": "2026-03-23",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 83.9982,
+        "EUR": 97.2886,
+        "CNY": 12.2171,
+        "GBP": 112.2132,
+        "CHF": 106.5561,
+        "THB": 2.57111,
+        "IDR": 0.004944,
+        "TRY": 1.90161,
+        "INR": 0.899836
       }
     },
     {
@@ -134198,29 +134198,29 @@
     {
       "date": "2026-03-29",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 81.1443,
+        "EUR": 93.4247,
+        "CNY": 11.7301,
+        "GBP": 108.3358,
+        "CHF": 101.7611,
+        "THB": 2.46827,
+        "IDR": 0.004801,
+        "TRY": 1.83076,
+        "INR": 0.857773
       }
     },
     {
       "date": "2026-03-30",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 81.1443,
+        "EUR": 93.4247,
+        "CNY": 11.7301,
+        "GBP": 108.3358,
+        "CHF": 101.7611,
+        "THB": 2.46827,
+        "IDR": 0.004801,
+        "TRY": 1.83076,
+        "INR": 0.857773
       }
     },
     {
@@ -134296,29 +134296,29 @@
     {
       "date": "2026-04-05",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 79.7293,
+        "EUR": 92.1915,
+        "CNY": 11.5743,
+        "GBP": 106.311,
+        "CHF": 99.7115,
+        "THB": 2.44239,
+        "IDR": 0.004689,
+        "TRY": 1.79346,
+        "INR": 0.855384
       }
     },
     {
       "date": "2026-04-06",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 79.7293,
+        "EUR": 92.1915,
+        "CNY": 11.5743,
+        "GBP": 106.311,
+        "CHF": 99.7115,
+        "THB": 2.44239,
+        "IDR": 0.004689,
+        "TRY": 1.79346,
+        "INR": 0.855384
       }
     },
     {
@@ -134394,29 +134394,29 @@
     {
       "date": "2026-04-12",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 76.9724,
+        "EUR": 90.012,
+        "CNY": 11.2521,
+        "GBP": 103.2585,
+        "CHF": 97.4088,
+        "THB": 2.39253,
+        "IDR": 0.004506,
+        "TRY": 1.72776,
+        "INR": 0.830794
       }
     },
     {
       "date": "2026-04-13",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 76.9724,
+        "EUR": 90.012,
+        "CNY": 11.2521,
+        "GBP": 103.2585,
+        "CHF": 97.4088,
+        "THB": 2.39253,
+        "IDR": 0.004506,
+        "TRY": 1.72776,
+        "INR": 0.830794
       }
     },
     {
@@ -134492,29 +134492,29 @@
     {
       "date": "2026-04-19",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 76.0535,
+        "EUR": 89.6256,
+        "CNY": 11.1457,
+        "GBP": 102.8395,
+        "CHF": 97.2178,
+        "THB": 2.37082,
+        "IDR": 0.004437,
+        "TRY": 1.7007,
+        "INR": 0.820218
       }
     },
     {
       "date": "2026-04-20",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 76.0535,
+        "EUR": 89.6256,
+        "CNY": 11.1457,
+        "GBP": 102.8395,
+        "CHF": 97.2178,
+        "THB": 2.37082,
+        "IDR": 0.004437,
+        "TRY": 1.7007,
+        "INR": 0.820218
       }
     },
     {
@@ -134590,29 +134590,29 @@
     {
       "date": "2026-04-26",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 75.5273,
+        "EUR": 88.2826,
+        "CNY": 11.027,
+        "GBP": 102.0374,
+        "CHF": 96.0541,
+        "THB": 2.32528,
+        "IDR": 0.004364,
+        "TRY": 1.68386,
+        "INR": 0.800961
       }
     },
     {
       "date": "2026-04-27",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 75.5273,
+        "EUR": 88.2826,
+        "CNY": 11.027,
+        "GBP": 102.0374,
+        "CHF": 96.0541,
+        "THB": 2.32528,
+        "IDR": 0.004364,
+        "TRY": 1.68386,
+        "INR": 0.800961
       }
     },
     {
@@ -134674,43 +134674,43 @@
     {
       "date": "2026-05-02",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 74.8014,
+        "EUR": 88.6429,
+        "CNY": 10.9593,
+        "GBP": 100.9894,
+        "CHF": 94.7093,
+        "THB": 2.28269,
+        "IDR": 0.004318,
+        "TRY": 1.66131,
+        "INR": 0.785385
       }
     },
     {
       "date": "2026-05-03",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 74.8014,
+        "EUR": 88.6429,
+        "CNY": 10.9593,
+        "GBP": 100.9894,
+        "CHF": 94.7093,
+        "THB": 2.28269,
+        "IDR": 0.004318,
+        "TRY": 1.66131,
+        "INR": 0.785385
       }
     },
     {
       "date": "2026-05-04",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 74.8014,
+        "EUR": 88.6429,
+        "CNY": 10.9593,
+        "GBP": 100.9894,
+        "CHF": 94.7093,
+        "THB": 2.28269,
+        "IDR": 0.004318,
+        "TRY": 1.66131,
+        "INR": 0.785385
       }
     },
     {
@@ -134786,43 +134786,43 @@
     {
       "date": "2026-05-10",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 74.2963,
+        "EUR": 88.549,
+        "CNY": 10.9306,
+        "GBP": 101.2733,
+        "CHF": 95.4597,
+        "THB": 2.30476,
+        "IDR": 0.004279,
+        "TRY": 1.64382,
+        "INR": 0.786733
       }
     },
     {
       "date": "2026-05-11",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 74.2963,
+        "EUR": 88.549,
+        "CNY": 10.9306,
+        "GBP": 101.2733,
+        "CHF": 95.4597,
+        "THB": 2.30476,
+        "IDR": 0.004279,
+        "TRY": 1.64382,
+        "INR": 0.786733
       }
     },
     {
       "date": "2026-05-12",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 74.2963,
+        "EUR": 88.549,
+        "CNY": 10.9306,
+        "GBP": 101.2733,
+        "CHF": 95.4597,
+        "THB": 2.30476,
+        "IDR": 0.004279,
+        "TRY": 1.64382,
+        "INR": 0.786733
       }
     },
     {
@@ -134884,29 +134884,29 @@
     {
       "date": "2026-05-17",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 73.1275,
+        "EUR": 85.183,
+        "CNY": 10.7318,
+        "GBP": 98.6124,
+        "CHF": 93.0612,
+        "THB": 2.24786,
+        "IDR": 0.004175,
+        "TRY": 1.61113,
+        "INR": 0.762336
       }
     },
     {
       "date": "2026-05-18",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 73.1275,
+        "EUR": 85.183,
+        "CNY": 10.7318,
+        "GBP": 98.6124,
+        "CHF": 93.0612,
+        "THB": 2.24786,
+        "IDR": 0.004175,
+        "TRY": 1.61113,
+        "INR": 0.762336
       }
     },
     {
@@ -134982,29 +134982,29 @@
     {
       "date": "2026-05-24",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 71.209,
+        "EUR": 82.5445,
+        "CNY": 10.4823,
+        "GBP": 95.5055,
+        "CHF": 90.5852,
+        "THB": 2.18011,
+        "IDR": 0.004029,
+        "TRY": 1.56267,
+        "INR": 0.742079
       }
     },
     {
       "date": "2026-05-25",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 71.209,
+        "EUR": 82.5445,
+        "CNY": 10.4823,
+        "GBP": 95.5055,
+        "CHF": 90.5852,
+        "THB": 2.18011,
+        "IDR": 0.004029,
+        "TRY": 1.56267,
+        "INR": 0.742079
       }
     },
     {
@@ -135080,29 +135080,29 @@
     {
       "date": "2026-05-31",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 71.0224,
+        "EUR": 82.6369,
+        "CNY": 10.4865,
+        "GBP": 95.3973,
+        "CHF": 90.5321,
+        "THB": 2.1796,
+        "IDR": 0.003992,
+        "TRY": 1.55504,
+        "INR": 0.744591
       }
     },
     {
       "date": "2026-06-01",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 71.0224,
+        "EUR": 82.6369,
+        "CNY": 10.4865,
+        "GBP": 95.3973,
+        "CHF": 90.5321,
+        "THB": 2.1796,
+        "IDR": 0.003992,
+        "TRY": 1.55504,
+        "INR": 0.744591
       }
     },
     {
@@ -135178,29 +135178,29 @@
     {
       "date": "2026-06-07",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 73.4689,
+        "EUR": 85.5582,
+        "CNY": 10.853,
+        "GBP": 98.7789,
+        "CHF": 93.2228,
+        "THB": 2.24909,
+        "IDR": 0.004073,
+        "TRY": 1.59963,
+        "INR": 0.770117
       }
     },
     {
       "date": "2026-06-08",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 73.4689,
+        "EUR": 85.5582,
+        "CNY": 10.853,
+        "GBP": 98.7789,
+        "CHF": 93.2228,
+        "THB": 2.24909,
+        "IDR": 0.004073,
+        "TRY": 1.59963,
+        "INR": 0.770117
       }
     },
     {
@@ -135262,43 +135262,43 @@
     {
       "date": "2026-06-13",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 71.9077,
+        "EUR": 82.9743,
+        "CNY": 10.6064,
+        "GBP": 96.3707,
+        "CHF": 89.8846,
+        "THB": 2.18432,
+        "IDR": 0.004001,
+        "TRY": 1.56014,
+        "INR": 0.751226
       }
     },
     {
       "date": "2026-06-14",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 71.9077,
+        "EUR": 82.9743,
+        "CNY": 10.6064,
+        "GBP": 96.3707,
+        "CHF": 89.8846,
+        "THB": 2.18432,
+        "IDR": 0.004001,
+        "TRY": 1.56014,
+        "INR": 0.751226
       }
     },
     {
       "date": "2026-06-15",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 71.9077,
+        "EUR": 82.9743,
+        "CNY": 10.6064,
+        "GBP": 96.3707,
+        "CHF": 89.8846,
+        "THB": 2.18432,
+        "IDR": 0.004001,
+        "TRY": 1.56014,
+        "INR": 0.751226
       }
     },
     {
@@ -135374,29 +135374,29 @@
     {
       "date": "2026-06-21",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 73.439,
+        "EUR": 84.1684,
+        "CNY": 10.806,
+        "GBP": 97.3287,
+        "CHF": 91.1267,
+        "THB": 2.23484,
+        "IDR": 0.00412,
+        "TRY": 1.58658,
+        "INR": 0.77735
       }
     },
     {
       "date": "2026-06-22",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 73.439,
+        "EUR": 84.1684,
+        "CNY": 10.806,
+        "GBP": 97.3287,
+        "CHF": 91.1267,
+        "THB": 2.23484,
+        "IDR": 0.00412,
+        "TRY": 1.58658,
+        "INR": 0.77735
       }
     },
     {
@@ -135472,29 +135472,29 @@
     {
       "date": "2026-06-28",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.0611,
+        "EUR": 87.4027,
+        "CNY": 11.3359,
+        "GBP": 101.7361,
+        "CHF": 95.3255,
+        "THB": 2.30604,
+        "IDR": 0.004295,
+        "TRY": 1.65822,
+        "INR": 0.815631
       }
     },
     {
       "date": "2026-06-29",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.0611,
+        "EUR": 87.4027,
+        "CNY": 11.3359,
+        "GBP": 101.7361,
+        "CHF": 95.3255,
+        "THB": 2.30604,
+        "IDR": 0.004295,
+        "TRY": 1.65822,
+        "INR": 0.815631
       }
     },
     {
@@ -135570,29 +135570,29 @@
     {
       "date": "2026-07-05",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.2264,
+        "EUR": 88.0304,
+        "CNY": 11.3803,
+        "GBP": 103.298,
+        "CHF": 96.2443,
+        "THB": 2.32855,
+        "IDR": 0.004292,
+        "TRY": 1.65544,
+        "INR": 0.810854
       }
     },
     {
       "date": "2026-07-06",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 77.2264,
+        "EUR": 88.0304,
+        "CNY": 11.3803,
+        "GBP": 103.298,
+        "CHF": 96.2443,
+        "THB": 2.32855,
+        "IDR": 0.004292,
+        "TRY": 1.65544,
+        "INR": 0.810854
       }
     },
     {
@@ -135668,29 +135668,29 @@
     {
       "date": "2026-07-12",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 76.6647,
+        "EUR": 87.6661,
+        "CNY": 11.3037,
+        "GBP": 102.6617,
+        "CHF": 95.0821,
+        "THB": 2.301,
+        "IDR": 0.004238,
+        "TRY": 1.63717,
+        "INR": 0.804348
       }
     },
     {
       "date": "2026-07-13",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 76.6647,
+        "EUR": 87.6661,
+        "CNY": 11.3037,
+        "GBP": 102.6617,
+        "CHF": 95.0821,
+        "THB": 2.301,
+        "IDR": 0.004238,
+        "TRY": 1.63717,
+        "INR": 0.804348
       }
     },
     {
@@ -135766,29 +135766,29 @@
     {
       "date": "2026-07-19",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 78.3987,
+        "EUR": 89.8998,
+        "CNY": 11.5602,
+        "GBP": 105.752,
+        "CHF": 97.2086,
+        "THB": 2.33281,
+        "IDR": 0.004346,
+        "TRY": 1.66773,
+        "INR": 0.813547
       }
     },
     {
       "date": "2026-07-20",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 78.3987,
+        "EUR": 89.8998,
+        "CNY": 11.5602,
+        "GBP": 105.752,
+        "CHF": 97.2086,
+        "THB": 2.33281,
+        "IDR": 0.004346,
+        "TRY": 1.66773,
+        "INR": 0.813547
       }
     },
     {
@@ -135864,29 +135864,29 @@
     {
       "date": "2026-07-26",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 78.0308,
+        "EUR": 88.8927,
+        "CNY": 11.5025,
+        "GBP": 103.937,
+        "CHF": 95.5674,
+        "THB": 2.30922,
+        "IDR": 0.004356,
+        "TRY": 1.65357,
+        "INR": 0.808283
       }
     },
     {
       "date": "2026-07-27",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 78.0308,
+        "EUR": 88.8927,
+        "CNY": 11.5025,
+        "GBP": 103.937,
+        "CHF": 95.5674,
+        "THB": 2.30922,
+        "IDR": 0.004356,
+        "TRY": 1.65357,
+        "INR": 0.808283
       }
     },
     {
@@ -135962,29 +135962,29 @@
     {
       "date": "2026-08-02",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 79.4637,
+        "EUR": 91.1925,
+        "CNY": 11.7694,
+        "GBP": 106.68,
+        "CHF": 98.5413,
+        "THB": 2.37808,
+        "IDR": 0.004396,
+        "TRY": 1.67751,
+        "INR": 0.83321
       }
     },
     {
       "date": "2026-08-03",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 79.4637,
+        "EUR": 91.1925,
+        "CNY": 11.7694,
+        "GBP": 106.68,
+        "CHF": 98.5413,
+        "THB": 2.37808,
+        "IDR": 0.004396,
+        "TRY": 1.67751,
+        "INR": 0.83321
       }
     },
     {
@@ -136060,29 +136060,29 @@
     {
       "date": "2026-08-09",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 82.1665,
+        "EUR": 94.8366,
+        "CNY": 12.1655,
+        "GBP": 110.6454,
+        "CHF": 101.3026,
+        "THB": 2.48177,
+        "IDR": 0.004585,
+        "TRY": 1.72806,
+        "INR": 0.862971
       }
     },
     {
       "date": "2026-08-10",
       "rates": {
-        "USD": null,
-        "EUR": null,
-        "CNY": null,
-        "GBP": null,
-        "CHF": null,
-        "THB": null,
-        "IDR": null,
-        "TRY": null,
-        "INR": null
+        "USD": 82.1665,
+        "EUR": 94.8366,
+        "CNY": 12.1655,
+        "GBP": 110.6454,
+        "CHF": 101.3026,
+        "THB": 2.48177,
+        "IDR": 0.004585,
+        "TRY": 1.72806,
+        "INR": 0.862971
       }
     },
     {
