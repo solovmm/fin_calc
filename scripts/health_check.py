@@ -5,6 +5,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from datetime import date
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -343,7 +344,7 @@ def check_actions(errors, warnings):
 def check_prod_site(errors, warnings, prod_base: str):
     base = prod_base.rstrip("/")
     # Use a throwaway query param to avoid overly aggressive proxy caches.
-    v = "healthcheck"
+    v = f"healthcheck-{time.time_ns()}"
     # Nginx/WordPress stacks can have intermittent latency spikes; keep this generous
     # enough to avoid false negatives while still catching real outages.
     timeout = 25
