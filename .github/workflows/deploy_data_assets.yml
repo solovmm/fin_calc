@@ -36,7 +36,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+          # Producer workflows commit refreshed data after their original trigger commit.
+          # Serialized deployments must always publish the current data from main.
+          ref: main
 
       - uses: actions/setup-python@v5
         with:

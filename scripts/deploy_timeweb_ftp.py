@@ -246,10 +246,14 @@ def main(argv: List[str]) -> int:
         # FTP greeting/data connections can be flaky/slow (reverse DNS, rate limits, etc.).
         # Retry a few times and keep PASV connections routable.
         ftp = FTP()
+        # Hosted Actions runners may resolve Timeweb's AAAA record without an IPv6 route.
+        # Keep both the control and passive data connection on the same IPv4 server.
+        connect_host = socket.gethostbyname(args.host)
+        print(f"Connecting to {args.host} via IPv4 {connect_host}", flush=True)
         last_exc: Exception | None = None
         for _attempt in range(1, 6):
             try:
-                ftp.connect(args.host, args.port, timeout=90)
+                ftp.connect(connect_host, args.port, timeout=30)
                 ftp.login(args.user, password)
                 last_exc = None
                 break
@@ -258,6 +262,7 @@ def main(argv: List[str]) -> int:
                 raise
             except (TimeoutError, socket.timeout, OSError) as exc:
                 last_exc = exc
+                print(f"FTP connection attempt {_attempt}/5 failed: {exc}", flush=True)
                 try:
                     ftp.close()
                 except Exception:
@@ -275,7 +280,7 @@ def main(argv: List[str]) -> int:
 
         def _makepasv():
             _host, port = orig_makepasv()
-            return args.host, port
+            return connect_host, port
 
         ftp.makepasv = _makepasv  # type: ignore[assignment]
 
