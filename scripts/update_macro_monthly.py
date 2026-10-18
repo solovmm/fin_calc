@@ -178,7 +178,13 @@ def load_cpi():
     long_df = long_df.dropna(subset=["year"])
     long_df["year"] = long_df["year"].astype(int)
     long_df["month"] = long_df["month"].astype(int)
-    long_df["cpi_index"] = pd.to_numeric(long_df["cpi_index"], errors="coerce")
+    # Excel normally supplies numbers; also accept a manually entered decimal comma.
+    long_df["cpi_index"] = pd.to_numeric(
+        long_df["cpi_index"].map(
+            lambda value: value.strip().replace(",", ".") if isinstance(value, str) else value
+        ),
+        errors="raise",
+    )
 
     long_df["date"] = pd.to_datetime(
         long_df["year"].astype(str) + "-" + long_df["month"].astype(str).str.zfill(2) + "-01"
@@ -405,7 +411,10 @@ def main():
             updated_cpi_rows += 1
 
     if not new_rows and updated_cpi_rows == 0 and refreshed_rate_rows == 0:
-        if not MACRO_ASSET_FILE.exists() or MACRO_ASSET_FILE.read_bytes() != MACRO_FILE.read_bytes():
+        if MACRO_ASSET_FILE is not None and (
+            not MACRO_ASSET_FILE.exists()
+            or MACRO_ASSET_FILE.read_bytes() != MACRO_FILE.read_bytes()
+        ):
             sync_macro_asset()
         update_last_updated({
             "macro_monthly": {
